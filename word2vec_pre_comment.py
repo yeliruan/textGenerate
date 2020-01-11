@@ -10,8 +10,7 @@ import csv
 import jieba
 import re
 
-filename = "/Users/mac/Library/Mobile Documents/com~apple~CloudDocs/comments.csv"
-outputfilepath = "/Users/mac/Desktop/comments/"
+
 
 def sentence_splitter(sentence):
     # 输入一个段落，分成句子，可使用split函数来实现
@@ -24,7 +23,7 @@ def sentence_splitter(sentence):
 
         
 def stopwordslist():
-    stopwords = [line.strip() for line in open('/Users/mac/Library/Mobile Documents/com~apple~CloudDocs/毕业论文代码/stopwords.txt',encoding='UTF-8').readlines()]
+    stopwords = [line.strip() for line in open('stopwords.txt',encoding='UTF-8').readlines()]
     return stopwords
 
 def seg_depart(sentence):
@@ -44,7 +43,9 @@ def seg_depart(sentence):
                 outstr += " "
     return outstr
 
-file_userdict = '/Users/mac/Library/Mobile Documents/com~apple~CloudDocs/毕业论文代码/mystopswords.txt' #此处文件名为用户自定义的文件名，内容为不想被分开的词
+filename = "dataset/moviedata/comments.csv"
+outputfilepath = "dataset/comments/"
+file_userdict = 'stopwords.txt' #此处文件名为用户自定义的文件名，内容为不想被分开的词
 jieba.load_userdict(file_userdict)
 
 d = {}
@@ -65,22 +66,24 @@ print(d)
 lastID = ''
 file_name = ''
 for item in  d_list:#遍历
-     if item != lastID:#新的电影就新建文件
-            file_name = outputfilepath + item + '.txt'#新建文件
-            lastID = item
-     sentences = sentence_splitter(d[item])
-     for sentence in sentences:
-         line =re.sub('[a-zA-Z]','',sentence)
-         seg_list = seg_depart(line)
-           # seg_list = jieba.cut(sentence,cut_all=False,HMM=True)#对每一句进行分词
-           
-         out_list = ' '.join(seg_list.split())
-         out_list  = out_list + '\n'
-         print(out_list)
-         if len(out_list) > 4:
-             f1 = open(file_name,'a+',encoding='utf8')
-             f1.writelines(out_list)
-    
+    if item != lastID:#新的电影就新建文件
+        file_name = outputfilepath + item + '.txt'#新建文件
+        lastID = item
+
+    sentences = sentence_splitter(d[item])
+    with open(file_name,'a+',encoding='utf8') as f1:
+        for sentence in sentences:
+            line =re.sub('[a-zA-Z]','',sentence)
+            seg_list = seg_depart(line)
+            # seg_list = jieba.cut(sentence,cut_all=False,HMM=True)#对每一句进行分词
+
+            out_list = ' '.join(seg_list.split())
+            out_list  = out_list + '\n'
+            print(out_list)
+            if len(out_list) > 4:
+                f1.writelines(out_list)
+                f1.flush()
+
 
 
            
