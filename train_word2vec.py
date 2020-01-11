@@ -29,9 +29,12 @@ def test(model_save_path):
     
 
 if __name__=='__main__':
-    root_dir = r'/Users/mac/workspace/textGenerate'
-    dataset_path = os.path.join(os.path.join(root_dir,'dataset'),'comments')
-    save_path = os.path.join(root_dir,'word2vec')
+    #this path is in my mac
+    #root_dir = r'/Users/mac/workspace/textGenerate'
+    #this path is in linux server
+    root_dir = r'/home/shengyu/yeli/textGenerate/dataset'
+    dataset_path = os.path.join(root_dir,'dataset')
+    save_path = os.path.join(root_dir,'word2vec_model')
     train(dataset_path,save_path)
     test(save_path)
     print('end')
