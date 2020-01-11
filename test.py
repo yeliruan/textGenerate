@@ -11,9 +11,12 @@ from gensim.models.word2vec import LineSentence
 import os
 
 def checkfile(file,writer):
+    
     try:
         model = Word2Vec(LineSentence(file),size=300,window=5,min_count=1,workers=4,sg=1)
+        print('---')
     except:
+        print('fiie is ',file)
         writer.write(file+'\n')
 
 
