@@ -14,7 +14,7 @@ import os
 def train(dataset_path,save_path):
     print('word2vec begin to train')
     print('load dataset at '+ dataset_path)
-    model = Word2Vec(PathLineSentences(dataset_path),size=300,window=5,min_count=1,workers=4,sg=1)
+    model = Word2Vec(PathLineSentences(dataset_path),size=200,window=5,min_count=1,workers=4,sg=1)
     print('word2vec train end')
     print('word2vec model save to '+save_path)
     model.save(save_path)

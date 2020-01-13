@@ -13,9 +13,9 @@ import os
 
 def main():
     # windows
-    root_dir = r'A:\研三\textGenerate'
+    #root_dir = r'A:\研三\textGenerate'
     # linux
-    # root_dir = '/home/shengyu/yeli/textGenerate'
+    root_dir = '/home/shengyu/yeli/textGenerate'
 
     dataset_path = os.path.join(root_dir,'dataset')
     filename = os.path.join(os.path.join(dataset_path,'moviedata'),'comments.csv')
