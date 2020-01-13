@@ -27,18 +27,22 @@ def test(model_save_path):
     print(wv['爱情'])
     print(wv.most_similar('爱情'))
     
-
+    model.train()
 if __name__=='__main__':
     #this path is in my mac
     #root_dir = r'/Users/mac/workspace/textGenerate'
 
     #this path is in linux server
-    #root_dir = '/home/shengyu/yeli/textGenerate/'
+    root_dir = '/home/shengyu/yeli/textGenerate/'
 
     #this path is in windows
-    root_dir = r'A:\研三\textGenerate'
-    dataset_path = os.path.join(os.path.join(root_dir,'dataset'),'movies')
-    save_path = os.path.join(root_dir,'word2vec_model')
+    #root_dir = r'A:\研三\textGenerate'
+
+    #用来存储训练word2vec的所有文件
+    dataset_path = os.path.join(os.path.join(root_dir,'dataset'),'word2vec_train_dataset')
+    #用来存储word2vec的训练结果模型
+    word2vec_dir = os.path.join(root_dir,'word2vec')
+    save_path = os.path.join(word2vec_dir,'word2vec_model')
     train(dataset_path,save_path)
     test(save_path)
     print('end')
