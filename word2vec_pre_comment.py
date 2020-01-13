@@ -55,7 +55,7 @@ def main():
         with open(file_name, 'a+', encoding='utf8') as f1:
             for sentence in sentences:
                 line = re.sub('[a-zA-Z]', '', sentence)
-                seg_list = seg_depart(line)
+                seg_list = seg_depart(line,stopwords)
                 # seg_list = jieba.cut(sentence,cut_all=False,HMM=True)#对每一句进行分词
 
                 out_list = ' '.join(seg_list.split())
