@@ -65,6 +65,10 @@ def main():
                     f1.writelines(out_list)
                     f1.flush()
 
+        #如果文件为空就删除
+        if(os.path.getsize(file_name)==0):
+            os.remove(file_name)
+
 def sentence_splitter(sentence):
     # 输入一个段落，分成句子，可使用split函数来实现
     sentences = re.split('(。|！|\!|\.|？|\?)',sentence)         # 保留分割符    
