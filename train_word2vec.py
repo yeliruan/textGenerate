@@ -26,8 +26,7 @@ def test(model_save_path):
     wv = model.wv
     print(wv['爱情'])
     print(wv.most_similar('爱情'))
-    
-    model.train()
+
 if __name__=='__main__':
     #this path is in my mac
     #root_dir = r'/Users/mac/workspace/textGenerate'
