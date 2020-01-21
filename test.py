@@ -14,16 +14,17 @@ def checkfile(file,writer):
     
     try:
         model = Word2Vec(LineSentence(file),size=300,window=5,min_count=1,workers=4,sg=1)
-        print('---')
+        print('ok')
     except:
         print('fiie is ',file)
         writer.write(file+'\n')
+        writer.flush()
 
 
 if __name__=='__main__':
-#    root_dir = '/home/shengyu/yeli/textGenerate/dataset'
- #   save_path = 'home/shengyu/yeli/textGenerate/test.txt'
-    root_dir = '/Users/mac/workspace/textGenerate/dataset/comments'
+    #root_dir = '/home/shengyu/yeli/textGenerate/dataset'
+    #save_path = 'home/shengyu/yeli/textGenerate/test.txt'
+    root_dir = '/Users/mac/workspace/textGenerate/dataset'
     save_path = '/Users/mac/workspace/textGenerate/test.txt'
     writer = open(save_path,'w',encoding='utf8')
     for file_name in os.listdir(root_dir):
