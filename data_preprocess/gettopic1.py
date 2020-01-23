@@ -53,16 +53,16 @@ def handle(origin_path,new_file_path,topics_list_save_path,low_thredshod):
     #剔除低频词,并把新的样例写入new_file
 
 
+    header = ['MOVIE_ID', 'COMMENT','RATING','SROTYLINE','TOPIC']
 
     with open(origin_path, 'r',encoding='utf8') as f,open(new_file_path,'w',encoding='utf8') as w:
         reader = csv.reader(f)
         print(type(reader))
-        header = next(f)
-        print(header)
+        next(f)
 
         f_csv = csv.DictWriter(w, header)
         # 写入标题
-        f_csv.writerow(header)
+        f_csv.writeheader()
 
         for row in reader:
             topics = row[4].split(' ')
@@ -72,7 +72,8 @@ def handle(origin_path,new_file_path,topics_list_save_path,low_thredshod):
                     new_topics.append(topic)
             if(len(new_topics)>0):
                 row[4] = ' '.join(new_topics)
-                f_csv.writerow(row)
+                rows = [{'MOVIE_ID': row[0], 'COMMENT': row[1], 'RATING': row[2], 'SROTYLINE': row[3], 'TOPIC': row[4]}]
+                f_csv.writerows(rows)
     with open(topics_list_save_path,'w',encoding='utf8') as w:
         w.write(' '.join(high_topics))
 

@@ -9,17 +9,7 @@ if __name__ == '__main__':
     print(len(string.strip()))
     print('end!')
 
-    with open(r'A:\研三\textGenerate\dataset\movies.csv', 'r',encoding='utf8') as f:
-        reader = csv.reader(f)
-        print(type(reader))
-        next(f)
-        count = 0
-        for row in reader:
-            count+=1
-
-        print(count)
-        count2 = 0
-        # reader.reset()
-        for row in reader:
-            count2+=1
-        print(count2)
+    with open(r'A:\研三\textGenerate\dataset\test.csv', 'a',newline='',encoding='utf8') as f:
+        writer = csv.writer(f)
+        writer.writerow(['bob',23])
+        writer.writerow(['marry',26])
