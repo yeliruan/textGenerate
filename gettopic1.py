@@ -9,6 +9,14 @@ Created on Wed Jan 15 16:59:29 2020
 import csv
 import pickle
 
+def write_csv(outfilename, headers, rows):
+    with open(outfilename, 'a',encoding='utf-8-sig')as f:
+        f_csv = csv.DictWriter(f, headers)
+                 # 如果需要写入标题就可以
+        f_csv.writerows(rows)
+        f.close() 
+
+
 if __name__=='__main__':
     inputfile = '/home/shengyu/yeli/movie_storyline_comment_topic.csv'
     inputfile_new ='/home/shengyu/yeli/movie_storyline_comment_topic_new.csv'
@@ -22,15 +30,7 @@ if __name__=='__main__':
     topic_dict_delete = {}
     
     headers = ['MOVIE_ID', 'COMMENT','RATING','SROTYLINE','TOPIC'] 
-
-def write_csv(outfilename, headers, rows):
-    with open(outfilename, 'a',encoding='utf-8-sig')as f:
-        f_csv = csv.DictWriter(f, headers)
-                 # 如果需要写入标题就可以
-        f_csv.writerows(rows)
-        f.close() 
-
-
+    
     with open(inputfile, 'r',encoding='utf8') as f: #topic 长度大于0的另存为
         reader = csv.reader(f)
         print(type(reader))
@@ -61,7 +61,6 @@ def write_csv(outfilename, headers, rows):
             topic_set.add(key)
         else:
             topic_dict_delete[key] = key    
-
                     
     with open(inputfile_new, 'r',encoding='utf8') as f,open(movie_storyline_comment_topic_new, 'r',encoding='utf8') as f1:
          f_csv = csv.DictWriter(f1, headers)
@@ -87,6 +86,10 @@ def write_csv(outfilename, headers, rows):
     with open(save_path, 'w') as fo:     # 将数据写入pkl文件
         fo.write(topic_set)
 
+
+
+
+   
             
             
     
