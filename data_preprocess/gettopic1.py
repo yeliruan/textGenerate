@@ -77,9 +77,10 @@ def handle(origin_path,new_file_path,topics_list_save_path,low_thredshod):
         w.write(' '.join(high_topics))
 
 if __name__=='__main__':
-    inputfile = '/home/shengyu/yeli/movie_storyline_comment_topic.csv'
-    inputfile_new = '/home/shengyu/yeli/movie_storyline_comment_topic_new.csv'
-    save_path = '/home/shengyu/yeli/textGenerate/topic.txt'
+    root_path = '/home/shengyu/yeli/textGenerate/dataset'
+    inputfile = os.path.join(root_path,'movie_storyline_comment_topic.csv')
+    inputfile_new = os.path.join(root_path,'movie_storyline_comment_topic_new.csv')
+    save_path = os.path.join(root_path,'topic.txt')
     handle(inputfile,inputfile_new,save_path,2)
     print('end')
 
