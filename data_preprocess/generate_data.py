@@ -140,7 +140,7 @@ def handle(origin_file,vocab_dict,topic_list,backgroud_knowledge_max_length,save
 
 if __name__ == '__main__':
     origin_file = '/home/shengyu/yeli/movie_storyline_comment_topic.csv'
-
+    
     # vocab_dict = dict()
     # vocab_dict['<pad>'] = len(vocab_dict)
     # wv['<pad>']= np.zeros(shape=200.)

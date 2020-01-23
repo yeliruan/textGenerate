@@ -27,6 +27,11 @@ def test(model_save_path):
     print(wv['爱情'])
     print(wv.most_similar('爱情'))
 
+def get_vocab_dict(model_save_path):
+    print('word2vec load from '+model_save_path)
+    model = Word2Vec.load(model_save_path)
+    model.vocabulary
+
 if __name__=='__main__':
     #this path is in my mac
     #root_dir = r'/Users/mac/workspace/textGenerate'
