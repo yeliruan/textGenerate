@@ -39,21 +39,13 @@ if __name__=='__main__':
             rows = row[4].split(' ')
             if len(rows) > 0 :
                 rows = [{'MOVIE_ID':row[0], 'COMMENT':row[1], 'RATING':row[2],'SROTYLINE':row[3],'TOPIC':row[4]}]
-                write_csv(inputfile_new,headers,rows)
-            
-            
-    with open(inputfile_new, 'r',encoding='utf8') as f:#统计topic次数
-        reader = csv.reader(f)
-        print(type(reader))
-        next(f)
-        for row in reader:
-            rows = row[4].split(' ')
-            
-            for rowitem in rows:
-                if rowitem in topic_dict:
-                    topic_dict[rowitem] = topic_dict[rowitem]+1
-                else:
-                    topic_dict[rowitem] = 1
+                topic_rows = row[4].split(' ')
+                for rowitem in rows:
+                    if rowitem in topic_dict:
+                        topic_dict[rowitem] = topic_dict[rowitem]+1
+                    else:
+                        topic_dict[rowitem] = 1
+                write_csv(inputfile_new,headers,rows)           
                     
 
     for key in topic_dict:
