@@ -25,17 +25,16 @@ def handle(origin_path,new_file_path,topics_list_save_path,low_thredshod):
         reader = csv.reader(f)
         print(type(reader))
         next(f)
+
+        # 处理低频topic词
+        # 统计topic频数
+        # 保存topic词-频数
+        topic_dict = dict()
         for row in reader:
             #去除topic为空的样例
             if(row[4].strip()==''):
                 continue
 
-            #处理低频topic词
-
-
-                #统计topic频数
-            # 保存topic词-频数
-            topic_dict = dict()
             topics = row[4].split(' ')
             for topic in topics:
                 if topic in topic_dict:
@@ -74,11 +73,14 @@ def handle(origin_path,new_file_path,topics_list_save_path,low_thredshod):
                 row[4] = ' '.join(new_topics)
                 rows = [{'MOVIE_ID': row[0], 'COMMENT': row[1], 'RATING': row[2], 'SROTYLINE': row[3], 'TOPIC': row[4]}]
                 f_csv.writerows(rows)
+
+    #写入topic list
     with open(topics_list_save_path,'w',encoding='utf8') as w:
         w.write(' '.join(high_topics))
 
 if __name__=='__main__':
     root_path = '/home/shengyu/yeli/textGenerate/dataset'
+    root_path = r'A:\研三\textGenerate\dataset'
     inputfile = os.path.join(root_path,'movie_storyline_comment_topic.csv')
     inputfile_new = os.path.join(root_path,'movie_storyline_comment_topic_new.csv')
     save_path = os.path.join(root_path,'topic.txt')
