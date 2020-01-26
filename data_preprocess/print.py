@@ -38,24 +38,25 @@ def handle_print(origin_file,imgsave_path):
 
 
     group = []
-    for i in range(500):
+    for i in range(maxlength+1):
         group.append(i)
 
-    sns.set_palette("hls") #设置所有图的颜色，使用hls色彩空间
-    sns.distplot(len(storyline),color="b",bins=30,kde=True)
+    # sns.set_palette("hls") #设置所有图的颜色，使用hls色彩空间
+    # sns.distplot(storyline_length,color="b",bins=30,kde=True)
+ 
+
+    plt.hist(storyline_length, group, histtype='bar', rwidth=0.8)
+    plt.legend()
+
+    plt.xlabel('storyline_length-group')
+    plt.ylabel('number')
+    plt.title('测试例子——直方图')
     plt.savefig(imgsave_path)
     plt.show()
-
-    # plt.hist(storyline_length, group, histtype='bar', rwidth=0.8)
-    # plt.legend()
-
-    # plt.xlabel('storyline_length-group')
-    # plt.ylabel('storyline_length')
-    # plt.title('测试例子——直方图')
     
 
 def cal_sentence_length(origin_file,rate):
-    max_length = 2000 #假设句子一定小于这个值
+    max_length = 4000 #假设句子一定小于这个值
     with open(origin_file, 'r', encoding="utf-8") as f:
         reader = csv.reader(f)
         print(type(reader))
@@ -91,3 +92,4 @@ if __name__ == '__main__':
     imgsave_path = os.path.join(root_path,'storyline_length.jpg')
     
     handle_print(origin_file,imgsave_path)
+    cal_sentence_length(origin_file,0.95)

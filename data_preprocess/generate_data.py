@@ -10,7 +10,7 @@ from util.constant import PAD_TAG
 from util.constant import TRAIN_TEST_VAL
 import os
 
-def handle(origin_file,vocab_dict,topic_list,backgroud_knowledge_max_length,save_path):
+def handle(origin_file,vocab_dict,topic_list,save_path,backgroud_knowledge_max_length=168):
 
     '''origin file 格式：movie_id  comment rating  storyline   topic'''
     '''movie_id:电影id'''
@@ -130,19 +130,26 @@ def handle(origin_file,vocab_dict,topic_list,backgroud_knowledge_max_length,save
     val_mem_idx_path = os.path.join(save_path, 'val_mem_idx.npy')
     np.save(val_mem_idx_path, mem[test_threshold:-1])
     
-    
+def load_topic_list(file_path):
+    topic_list = []
+    with open(file_path, "r") as f:  # 打开文件
+        topic_list = f.read().split(' ')  # 读取文件
 
-
-
-
+    return topic_list 
 
 
 
 if __name__ == '__main__':
-    origin_file = '/home/shengyu/yeli/movie_storyline_comment_topic.csv'
-    
+        
     # vocab_dict = dict()
     # vocab_dict['<pad>'] = len(vocab_dict)
     # wv['<pad>']= np.zeros(shape=200.)
-    handle(origin_file)
+
+    root_path = '/home/shengyu/yeli/textGenerate/dataset'
+    origin_file = os.path.join(root_path,'movie_storyline_comment_topic_new.csv')
+    topic_list_path = os.path.join(root_path,'topic.txt')
+    topic_list = load_topic_list(topic_list_path)
+
+
+    handle(origin_file,vocab_dict,topic_list,root_path)
     pass

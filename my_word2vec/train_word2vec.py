@@ -9,6 +9,7 @@ Created on Sat Jan 11 11:56:36 2020
 from gensim.models import Word2Vec
 from gensim.models.word2vec import PathLineSentences
 import os
+import numpy as np
 
 
 def train(dataset_path,save_path):
@@ -27,10 +28,19 @@ def test(model_save_path):
     print(wv['爱情'])
     print(wv.most_similar('爱情'))
 
-def get_vocab_dict(model_save_path):
+def get_vocab_dict(model_save_path,vocab_dict_save_path):
     print('word2vec load from '+model_save_path)
     model = Word2Vec.load(model_save_path)
-    model.vocabulary
+    wv = model.wv
+    wv['<PAD>'] = np.zeros(wv.vector_size)
+    vocab_dict = dict()
+    index = 0
+    for key in model.wv.vocab.keys() :
+        vocab_dict[key] = index
+        index+=1
+
+    np.save(vocab_dict_save_path,vocab_dict )
+    
 
 if __name__=='__main__':
     #this path is in my mac
@@ -47,7 +57,10 @@ if __name__=='__main__':
     #用来存储word2vec的训练结果模型
     word2vec_dir = os.path.join(root_dir,'word2vec')
     save_path = os.path.join(word2vec_dir,'word2vec_model')
+    vocab_dict_save_path = os.path.join(os.path.join(root_dir,'dataset'),'vocab_dict.npy')
+
     train(dataset_path,save_path)
     test(save_path)
+    get_vocab_dict(save_path,vocab_dict_save_path)
     print('end')
     
