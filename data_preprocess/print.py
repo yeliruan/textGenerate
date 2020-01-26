@@ -12,6 +12,7 @@ import csv
 import matplotlib.pyplot as plt
 from matplotlib.font_manager import FontProperties
 
+import seaborn as sns 
 import os
 
 def handle_print(origin_file,imgsave_path):
@@ -40,15 +41,18 @@ def handle_print(origin_file,imgsave_path):
     for i in range(500):
         group.append(i)
 
-    plt.hist(storyline_length, group, histtype='bar', rwidth=0.8)
-    plt.legend()
-
-    plt.xlabel('storyline_length-group')
-    plt.ylabel('storyline_length')
-    plt.title('测试例子——直方图')
-    
-    plt.savefig(imgsave_path)    
+    sns.set_palette("hls") #设置所有图的颜色，使用hls色彩空间
+    sns.distplot(len(storyline),color="b",bins=30,kde=True)
+    plt.savefig(imgsave_path)
     plt.show()
+
+    # plt.hist(storyline_length, group, histtype='bar', rwidth=0.8)
+    # plt.legend()
+
+    # plt.xlabel('storyline_length-group')
+    # plt.ylabel('storyline_length')
+    # plt.title('测试例子——直方图')
+    
 
 def cal_sentence_length(origin_file,rate):
     max_length = 2000 #假设句子一定小于这个值
