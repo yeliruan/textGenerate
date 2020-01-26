@@ -26,13 +26,15 @@ def handle_print(origin_file,imgsave_path):
         # 选取max_length
 
         storyline_length = []
+        count = 0
 
         for row in reader:
             print(row[0])
+            count = count+1
             storyline = row[4].split(' ')
             storyline_length.append(len(storyline))
 
-    group = [5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55]
+    group = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]
     
     plt.hist(storyline_length, group, histtype='bar', rwidth=0.8)
     plt.legend()
