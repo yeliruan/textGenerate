@@ -14,7 +14,6 @@ from matplotlib.font_manager import FontProperties
 
 import os
 
-
 def handle_print(origin_file,imgsave_path):
 
     with open(origin_file, 'r',encoding="utf-8") as f:
@@ -27,15 +26,20 @@ def handle_print(origin_file,imgsave_path):
 
         storyline_length = []
         count = 0
+        maxlength = 0
 
         for row in reader:
-            print(row[0])
             count = count+1
-            storyline = row[4].split(' ')
+            storyline = row[3].split(' ')
+            if len(storyline) > maxlength:
+                maxlength = len(storyline)
             storyline_length.append(len(storyline))
 
-    group = [2,4,6,8,10,12,14,16,18,20]
-    
+
+    group = []
+    for i in range(maxlength+1):
+        group.append(i)
+
     plt.hist(storyline_length, group, histtype='bar', rwidth=0.8)
     plt.legend()
 
