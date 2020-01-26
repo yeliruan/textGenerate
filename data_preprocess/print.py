@@ -49,7 +49,35 @@ def handle_print(origin_file,imgsave_path):
     
     plt.savefig(imgsave_path)    
     plt.show()
-    
+
+def cal_sentence_length(origin_file,rate):
+    max_length = 2000 #假设句子一定小于这个值
+    with open(origin_file, 'r', encoding="utf-8") as f:
+        reader = csv.reader(f)
+        print(type(reader))
+
+        #统计各个长度（索引）句子的个数,初始化每个长度的句子个数都为0
+        lengths_value = [0 for _ in range(max_length)]
+
+        for row in reader:
+            storyline = row[3].split(' ')
+            the_length = len(storyline)
+            lengths_value[the_length] += 1
+
+    #统计长度小于某个值（索引）的句子总数
+    sums =[0 for _ in range(max_length)]
+    sum = 0
+    for index,value in enumerate(lengths_value):
+        sum+=value
+        sums[index] = sum
+
+    #求小于某个句长threshold的句子占比为rate
+    for index in range(max_length):
+        if(sums[index]/sums[-1]>=rate):
+            print(index)
+            return index
+
+
 if __name__ == '__main__':
     #root_path = '/Users/mac/Desktop/'
     root_path = '/home/shengyu/yeli/textGenerate/dataset'
