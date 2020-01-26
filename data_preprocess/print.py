@@ -48,9 +48,9 @@ def handle_print(origin_file,imgsave_path):
     plt.hist(storyline_length, group, histtype='bar', rwidth=0.8)
     plt.legend()
 
-    plt.xlabel('storyline_length-group')
+    plt.xlabel('storyline_length_group')
     plt.ylabel('number')
-    plt.title('测试例子——直方图')
+    #plt.title('测试例子——直方图')
     plt.savefig(imgsave_path)
     plt.show()
     
