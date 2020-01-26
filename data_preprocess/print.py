@@ -37,7 +37,7 @@ def handle_print(origin_file,imgsave_path):
 
 
     group = []
-    for i in range(maxlength+1):
+    for i in range(500):
         group.append(i)
 
     plt.hist(storyline_length, group, histtype='bar', rwidth=0.8)
