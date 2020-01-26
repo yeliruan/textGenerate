@@ -34,7 +34,7 @@ def handle_print(origin_file,imgsave_path):
             storyline = row[4].split(' ')
             storyline_length.append(len(storyline))
 
-    group = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]
+    group = [2,4,6,8,10,12,14,16,18,20]
     
     plt.hist(storyline_length, group, histtype='bar', rwidth=0.8)
     plt.legend()
