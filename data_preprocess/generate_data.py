@@ -44,6 +44,9 @@ def handle(origin_file,vocab_dict,topic_list,save_path,backgroud_knowledge_max_l
             topic_str = row[4]
 
             topics = topic_str.split(' ')
+            for topic in topics:
+                print(topic)
+                print(vocab_dict[topic])            
             topic_examples.append([vocab_dict[topic] for topic in topics])
             topic_lens.append(len(topics))
             topic_identifiers.append([1 if topic in topics else 0 for topic in topic_list])
@@ -155,7 +158,7 @@ if __name__ == '__main__':
     origin_file = os.path.join(root_path,'movie_storyline_comment_topic_new.csv')
     topic_list_path = os.path.join(root_path,'topic.txt')
     topic_list = load_topic_list(topic_list_path)
-    vocab_dict = os.path.join(root_path,'vocab_dict')
+    vocab_dict = np.load(os.path.join(root_path,'vocab_dict.npy')).item()
 
     handle(origin_file,vocab_dict,topic_list,root_path)
     pass
