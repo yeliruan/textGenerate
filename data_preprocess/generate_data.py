@@ -44,10 +44,16 @@ def handle(origin_file,vocab_dict,topic_list,save_path,backgroud_knowledge_max_l
             topic_str = row[4]
 
             topics = topic_str.split(' ')
+            
             for topic in topics:
                 print(topic)
-                print(vocab_dict[topic])            
-            topic_examples.append([vocab_dict[topic] for topic in topics])
+                topic_examples_temp = []
+                if topic != '':
+                    topic_examples_temp.append(vocab_dict[topic])
+            topic_examples.append(topic_examples_temp)
+                 
+
+            #topic_examples.append([vocab_dict[topic] for topic in topics ])
             topic_lens.append(len(topics))
             topic_identifiers.append([1 if topic in topics else 0 for topic in topic_list])
 
