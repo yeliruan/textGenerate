@@ -37,6 +37,8 @@ def handle(origin_path,new_file_path,topics_list_save_path,low_thredshod):
 
             topics = row[4].split(' ')
             for topic in topics:
+                if(topic == ''):
+                    continue
                 if topic in topic_dict:
                     topic_dict[topic] = topic_dict[topic] + 1
                 else:
@@ -64,6 +66,23 @@ def handle(origin_path,new_file_path,topics_list_save_path,low_thredshod):
         f_csv.writeheader()
 
         for row in reader:
+            #去除comment中的空字符
+            comment_words = row[1].split(' ')
+            new_row_1 = []
+            for comment_word in comment_words:
+                if(comment_word!=''):
+                    new_row_1.append(comment_word)
+            row[1] = ' '.join(new_row_1)
+
+            #去除简介中的空字符
+            storyline_words = row[3].split(' ')
+            new_row_3 = []
+            for storyline_word in storyline_words:
+                if(storyline_word!=''):
+                    new_row_3.append(storyline_word)
+            row[3] = ' '.join(new_row_3)
+
+            #去除低频词和空字符
             topics = row[4].split(' ')
             new_topics = []
             for topic in topics:
@@ -73,6 +92,7 @@ def handle(origin_path,new_file_path,topics_list_save_path,low_thredshod):
                 row[4] = ' '.join(new_topics)
                 rows = [{'MOVIE_ID': row[0], 'COMMENT': row[1], 'RATING': row[2], 'SROTYLINE': row[3], 'TOPIC': row[4]}]
                 f_csv.writerows(rows)
+
 
     #写入topic list
     with open(topics_list_save_path,'w',encoding='utf8') as w:
