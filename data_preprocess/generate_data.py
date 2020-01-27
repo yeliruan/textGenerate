@@ -44,17 +44,41 @@ def handle(origin_file,vocab_dict,topic_list,save_path,stopwords,backgroud_knowl
             topic_str = row[4]
 
             topics = topic_str.split(' ')
+            topic_examples_temp = []
 
-            topic_examples.append([vocab_dict[topic] for topic in topics if topic not in stopwords])
+            for topic in topics:
+                if topic != '':
+                    try:
+                        topic_examples_temp.append(vocab_dict[topic])
+                    except KeyError:
+                        topic_examples_temp.append(vocab_dict['<PAD>'])
+                else:
+                    print(topic_str)
+            topic_examples.append(topic_examples_temp)
+            
+            #topic_examples.append([vocab_dict[topic] for topic in topics if topic not in stopwords and topic != ''])
+           
             topic_lens.append(len(topics))
             topic_identifiers.append([1 if topic in topics else 0 for topic in topic_list])
 
             comment_words = comment_str.split(' ')
-            comment_examples.append([vocab_dict[word] for word in comment_words if word not in stopwords)
+            comment_examples_temp = []
+
+            for word in comment_words:
+                if word != '':
+                    try:
+                        comment_examples_temp.append(vocab_dict[word])
+                    except KeyError:
+                        comment_examples_temp.append(vocab_dict['<PAD>'])
+                else:
+                    print(comment_str)
+
+            comment_examples.append(comment_examples_temp)     
+
+            #comment_examples.append([vocab_dict[word] for word in comment_words if word not in stopwords and word != ''])
+            
             comment_lens.append(len(comment_words))
-
             storyline_words = storyline_str.split(' ')
-
             #将简介填充或截取
             if(len(storyline_words)>backgroud_knowledge_max_length):
                 storyline_words = storyline_words[0:backgroud_knowledge_max_length]
@@ -63,7 +87,17 @@ def handle(origin_file,vocab_dict,topic_list,save_path,stopwords,backgroud_knowl
             assert len(storyline_words==backgroud_knowledge_max_length)
 
             #简介word转id
-            mem.append([vocab_dict[word] for word in storyline_words])
+            mem_temp = []
+            for word in storyline_words:
+                if word != '':
+                    try:
+                        mem_temp.append(vocab_dict[word])
+                    except KeyError:
+                        mem_temp.append(vocab_dict['<PAD>'])
+                else:
+                    print(storyline_str)
+            mem.append(mem_temp)
+            #mem.append([vocab_dict[word] for word in storyline_words])
 
     #训练：测试：评估分段
     assert TRAIN_TEST_VAL[0]+TRAIN_TEST_VAL[1]+TRAIN_TEST_VAL[2]==1
