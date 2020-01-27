@@ -10,7 +10,7 @@ from util.constant import PAD_TAG
 from util.constant import TRAIN_TEST_VAL
 import os
 
-def handle(origin_file,vocab_dict,topic_list,save_path,backgroud_knowledge_max_length=168):
+def handle(origin_file,vocab_dict,topic_list,save_path,stopwords,backgroud_knowledge_max_length=168):
 
     '''origin file 格式：movie_id  comment rating  storyline   topic'''
     '''movie_id:电影id'''
@@ -44,30 +44,22 @@ def handle(origin_file,vocab_dict,topic_list,save_path,backgroud_knowledge_max_l
             topic_str = row[4]
 
             topics = topic_str.split(' ')
-            
-            for topic in topics:
-                print(topic)
-                topic_examples_temp = []
-                if topic != '':
-                    topic_examples_temp.append(vocab_dict[topic])
-            topic_examples.append(topic_examples_temp)
-                 
 
-            #topic_examples.append([vocab_dict[topic] for topic in topics ])
+            topic_examples.append([vocab_dict[topic] for topic in topics if topic not in stopwords])
             topic_lens.append(len(topics))
             topic_identifiers.append([1 if topic in topics else 0 for topic in topic_list])
 
             comment_words = comment_str.split(' ')
-            comment_examples.append([vocab_dict[word] for word in comment_words])
+            comment_examples.append([vocab_dict[word] for word in comment_words if word not in stopwords)
             comment_lens.append(len(comment_words))
 
-            storyline_words = storyline_str.splie(' ')
+            storyline_words = storyline_str.split(' ')
 
             #将简介填充或截取
             if(len(storyline_words)>backgroud_knowledge_max_length):
                 storyline_words = storyline_words[0:backgroud_knowledge_max_length]
             else:
-                storyline_words.extends[[PAD_TAG for i in range(backgroud_knowledge_max_length-len(storyline_words))]]
+                storyline_words.extend[[PAD_TAG for i in range(backgroud_knowledge_max_length-len(storyline_words))]]
             assert len(storyline_words==backgroud_knowledge_max_length)
 
             #简介word转id
@@ -143,16 +135,11 @@ def load_topic_list(file_path):
     topic_list = []
     with open(file_path, "r") as f:  # 打开文件
         topic_list = f.read().split(' ')  # 读取文件
-
     return topic_list 
 
-def load_vocab_dict():
-    vocab_dict = dict()
-    index = 0
-    for key in model.wv.vocab.keys() :
-        vocab_dict[key] = index
-        index+=1
-
+def stopwordslist(stopword_file):
+    stopwords = [line.strip() for line in open(stopword_file,encoding='UTF-8').readlines()]
+    return stopwords
 
 if __name__ == '__main__':
         
@@ -162,9 +149,11 @@ if __name__ == '__main__':
 
     root_path = '/home/shengyu/yeli/textGenerate/dataset'
     origin_file = os.path.join(root_path,'movie_storyline_comment_topic_new.csv')
+    stopword_file ='/home/shengyu/yeli/textGenerate/util/stopword.txt'
     topic_list_path = os.path.join(root_path,'topic.txt')
     topic_list = load_topic_list(topic_list_path)
     vocab_dict = np.load(os.path.join(root_path,'vocab_dict.npy')).item()
 
-    handle(origin_file,vocab_dict,topic_list,root_path)
+    stopwords = stopwordslist(stopword_file)
+    handle(origin_file,vocab_dict,topic_list,root_path,stopwords)
     pass

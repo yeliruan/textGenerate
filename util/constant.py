@@ -4,7 +4,7 @@ __doc__ = 'description全局常量'
 __author__ = '13314409603@163.com'
 
 #补齐tag
-PAD_TAG = '<pad>'
+PAD_TAG = '<PAD>'
 
 TRAIN_TEST_VAL = [0.7,0.2,0.1]
 
