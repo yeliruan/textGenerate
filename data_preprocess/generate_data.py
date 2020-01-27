@@ -83,8 +83,8 @@ def handle(origin_file,vocab_dict,topic_list,save_path,stopwords,backgroud_knowl
             if(len(storyline_words)>backgroud_knowledge_max_length):
                 storyline_words = storyline_words[0:backgroud_knowledge_max_length]
             else:
-                storyline_words.extend[[PAD_TAG for i in range(backgroud_knowledge_max_length-len(storyline_words))]]
-            assert len(storyline_words==backgroud_knowledge_max_length)
+                storyline_words.extend([PAD_TAG for i in range(backgroud_knowledge_max_length-len(storyline_words))])
+            assert len(storyline_words)==backgroud_knowledge_max_length
 
             #简介word转id
             mem_temp = []
