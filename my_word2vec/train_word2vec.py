@@ -59,7 +59,7 @@ if __name__=='__main__':
     save_path = os.path.join(word2vec_dir,'word2vec_model')
     vocab_dict_save_path = os.path.join(os.path.join(root_dir,'dataset'),'vocab_dict.npy')
 
-    train(dataset_path,save_path)
+    #train(dataset_path,save_path)
     test(save_path)
     get_vocab_dict(save_path,vocab_dict_save_path)
     print('end')

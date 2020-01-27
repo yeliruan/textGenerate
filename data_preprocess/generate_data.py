@@ -137,6 +137,12 @@ def load_topic_list(file_path):
 
     return topic_list 
 
+def load_vocab_dict():
+    vocab_dict = dict()
+    index = 0
+    for key in model.wv.vocab.keys() :
+        vocab_dict[key] = index
+        index+=1
 
 
 if __name__ == '__main__':
@@ -149,7 +155,7 @@ if __name__ == '__main__':
     origin_file = os.path.join(root_path,'movie_storyline_comment_topic_new.csv')
     topic_list_path = os.path.join(root_path,'topic.txt')
     topic_list = load_topic_list(topic_list_path)
-
+    vocab_dict = os.path.join(root_path,'vocab_dict')
 
     handle(origin_file,vocab_dict,topic_list,root_path)
     pass
