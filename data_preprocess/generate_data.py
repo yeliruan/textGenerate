@@ -53,10 +53,9 @@ def handle(origin_file,vocab_dict,topic_list,save_path,backgroud_knowledge_max_l
                     except KeyError:
                         topic_examples_temp.append(vocab_dict['<PAD>'])
                 else:
-                    print(topic_str)
+                    print('存在空字符:'+topic_str)
             topic_examples.append(topic_examples_temp)
-            
-            #topic_examples.append([vocab_dict[topic] for topic in topics if topic not in stopwords and topic != ''])
+
            
             topic_lens.append(len(topics))
             topic_identifiers.append([1 if topic in topics else 0 for topic in topic_list])
@@ -71,11 +70,10 @@ def handle(origin_file,vocab_dict,topic_list,save_path,backgroud_knowledge_max_l
                     except KeyError:
                         comment_examples_temp.append(vocab_dict['<PAD>'])
                 else:
-                    print(comment_str)
+                    print('存在空字符:'+comment_str)
 
             comment_examples.append(comment_examples_temp)     
 
-            #comment_examples.append([vocab_dict[word] for word in comment_words if word not in stopwords and word != ''])
             
             comment_lens.append(len(comment_words))
             storyline_words = storyline_str.split(' ')
@@ -95,12 +93,10 @@ def handle(origin_file,vocab_dict,topic_list,save_path,backgroud_knowledge_max_l
                     except KeyError:
                         mem_temp.append(vocab_dict['<PAD>'])
                 else:
-                    print(storyline_str)
+                    print('存在空字符:'+storyline_str)
             mem.append(mem_temp)
-            #mem.append([vocab_dict[word] for word in storyline_words])
 
     #训练：测试：评估分段
-    # assert TRAIN_TEST_VAL[0]+TRAIN_TEST_VAL[1]+TRAIN_TEST_VAL[2]==1
     total_examples_length = len(topic_examples)
     train_threshold = int(TRAIN_TEST_VAL[0]*total_examples_length)
     test_threshold = int(TRAIN_TEST_VAL[1]*total_examples_length+train_threshold)
@@ -176,16 +172,11 @@ def stopwordslist(stopword_file):
     return stopwords
 
 if __name__ == '__main__':
-        
-    # vocab_dict = dict()
-    # vocab_dict['<pad>'] = len(vocab_dict)
-    # wv['<pad>']= np.zeros(shape=200.)
 
-    # root_path = '/home/shengyu/yeli/textGenerate/dataset'
-    root_path = r'A:\研三\textGenerate\dataset'
+    root_path = '/home/shengyu/yeli/textGenerate/dataset'
+    # root_path = r'A:\研三\textGenerate\dataset'
 
-    origin_file = os.path.join(root_path,'topic_small.csv')
-    # stopword_file ='/home/shengyu/yeli/textGenerate/util/stopword.txt'
+    origin_file = os.path.join(root_path,'movie_storyline_comment_topic.csv')
     topic_list_path = os.path.join(root_path,'topic.txt')
     topic_list = load_topic_list(topic_list_path)
     np_load_old = np.load
@@ -193,6 +184,5 @@ if __name__ == '__main__':
     vocab_dict = np.load(os.path.join(root_path,'vocab_dict.npy')).item()
 
     save_path = os.path.join(root_path,'cteg')
-    # stopwords = stopwordslist(stopword_file)
     handle(origin_file,vocab_dict,topic_list,save_path)
     print('end')
