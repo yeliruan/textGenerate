@@ -1,3 +1,10 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Tue Jan  7 15:27:05 2020
+
+@author: mac
+"""
 import csv
 import numpy as np
 
@@ -16,9 +23,10 @@ outfilename = "/home/shengyu/yeli/textGenerate/dataset/topic_small.csv"
 headers = ['MOVIE_ID', 'COMMENT','RATING','SROTYLINE','TOPIC'] 
 
 
-with open(filename, 'r') as f, open(outfilename, 'a') as w:
+with open(filename, 'r') as f:
     reader = csv.reader(f)
-    count = 20
+    count = 0
+    next(f)
     for row in reader:
          count = count+1
          if count <= 21:
@@ -26,4 +34,9 @@ with open(filename, 'r') as f, open(outfilename, 'a') as w:
              print(rows)
              write_csv(outfilename, headers, rows)
         
+
+
+
+
+
 
