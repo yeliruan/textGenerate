@@ -10,7 +10,7 @@ from util.constant import PAD_TAG
 from util.constant import TRAIN_TEST_VAL
 import os
 
-def handle(origin_file,vocab_dict,topic_list,save_path,stopwords,backgroud_knowledge_max_length=168):
+def handle(origin_file,vocab_dict,topic_list,save_path,backgroud_knowledge_max_length=168):
 
     '''origin file 格式：movie_id  comment rating  storyline   topic'''
     '''movie_id:电影id'''
@@ -53,10 +53,9 @@ def handle(origin_file,vocab_dict,topic_list,save_path,stopwords,backgroud_knowl
                     except KeyError:
                         topic_examples_temp.append(vocab_dict['<PAD>'])
                 else:
-                    print(topic_str)
+                    print('存在空字符:'+topic_str)
             topic_examples.append(topic_examples_temp)
-            
-            #topic_examples.append([vocab_dict[topic] for topic in topics if topic not in stopwords and topic != ''])
+
            
             topic_lens.append(len(topics))
             topic_identifiers.append([1 if topic in topics else 0 for topic in topic_list])
@@ -71,11 +70,10 @@ def handle(origin_file,vocab_dict,topic_list,save_path,stopwords,backgroud_knowl
                     except KeyError:
                         comment_examples_temp.append(vocab_dict['<PAD>'])
                 else:
-                    print(comment_str)
+                    print('存在空字符:'+comment_str)
 
             comment_examples.append(comment_examples_temp)     
 
-            #comment_examples.append([vocab_dict[word] for word in comment_words if word not in stopwords and word != ''])
             
             comment_lens.append(len(comment_words))
             storyline_words = storyline_str.split(' ')
@@ -95,15 +93,13 @@ def handle(origin_file,vocab_dict,topic_list,save_path,stopwords,backgroud_knowl
                     except KeyError:
                         mem_temp.append(vocab_dict['<PAD>'])
                 else:
-                    print(storyline_str)
+                    print('存在空字符:'+storyline_str)
             mem.append(mem_temp)
-            #mem.append([vocab_dict[word] for word in storyline_words])
 
     #训练：测试：评估分段
-    assert TRAIN_TEST_VAL[0]+TRAIN_TEST_VAL[1]+TRAIN_TEST_VAL[2]==1
     total_examples_length = len(topic_examples)
-    train_threshold = TRAIN_TEST_VAL[0]*total_examples_length
-    test_threshold = TRAIN_TEST_VAL[1]*total_examples_length+train_threshold
+    train_threshold = int(TRAIN_TEST_VAL[0]*total_examples_length)
+    test_threshold = int(TRAIN_TEST_VAL[1]*total_examples_length+train_threshold)
 
     #训练数据
     #si_train 话题
@@ -167,7 +163,7 @@ def handle(origin_file,vocab_dict,topic_list,save_path,stopwords,backgroud_knowl
     
 def load_topic_list(file_path):
     topic_list = []
-    with open(file_path, "r") as f:  # 打开文件
+    with open(file_path, 'r',encoding='utf8') as f:  # 打开文件
         topic_list = f.read().split(' ')  # 读取文件
     return topic_list 
 
@@ -176,18 +172,17 @@ def stopwordslist(stopword_file):
     return stopwords
 
 if __name__ == '__main__':
-        
-    # vocab_dict = dict()
-    # vocab_dict['<pad>'] = len(vocab_dict)
-    # wv['<pad>']= np.zeros(shape=200.)
 
-    root_path = '/Users/mac/workspace/textGenerate/dataset'
-    origin_file = '/Users/mac/Desktop/topic_small.csv'
-    stopword_file ='/Users/mac/workspace/textGenerate/util/stopword.txt'
+    root_path = '/home/shengyu/yeli/textGenerate/dataset'
+    # root_path = r'A:\研三\textGenerate\dataset'
+
+    origin_file = os.path.join(root_path,'movie_storyline_comment_topic.csv')
     topic_list_path = os.path.join(root_path,'topic.txt')
     topic_list = load_topic_list(topic_list_path)
-    vocab_dict = np.load(os.path.join(root_path,'vocab_dict.npy'),allow_pickle=True).item()
+    np_load_old = np.load
+    np.load = lambda *a, **k: np_load_old(*a, allow_pickle=True, **k)
+    vocab_dict = np.load(os.path.join(root_path,'vocab_dict.npy')).item()
 
-    stopwords = stopwordslist(stopword_file)
-    handle(origin_file,vocab_dict,topic_list,root_path,stopwords)
-    pass
+    save_path = os.path.join(root_path,'cteg')
+    handle(origin_file,vocab_dict,topic_list,save_path)
+    print('end')
