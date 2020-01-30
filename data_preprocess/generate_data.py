@@ -122,47 +122,47 @@ def handle(origin_file,vocab_dict,topic_list,save_path,stopwords,backgroud_knowl
     tl_train = os.path.join(save_path,'train_tgt_len.npy')
     np.save(tl_train,comment_lens[0:train_threshold])
     #memory 外部知识
-    train_mem_idx = os.path.join(save_path,'train_mem_idx.npy')
+    train_mem_idx = os.path.join(save_path,'train_mem_idx_120_concept.npy')
     np.save(train_mem_idx,mem[0:train_threshold])
 
     #测试数据
     #si_test 话题
-    si_test_path = os.path.join(save_path,'test_src.npy')
+    si_test_path = os.path.join(save_path,'tst.src.npy')
     np.save(si_test_path,topic_examples[train_threshold:test_threshold])
     #sl_test 话题长度
-    sl_test_path = os.path.join(save_path,'test_src_len.npy')
+    sl_test_path = os.path.join(save_path,'tst.src.len.npy')
     np.save(sl_test_path,topic_lens[train_threshold:test_threshold])
     #s_lbl_test 话题分类器
-    s_lbl_test = os.path.join(save_path,'test_src_lbl_oh.npy')
-    np.save(s_lbl_train,topic_identifiers[train_threshold:test_threshold])
+    s_lbl_test = os.path.join(save_path,'tst.src.lbl.oh.npy')
+    np.save(s_lbl_test,topic_identifiers[train_threshold:test_threshold])
     #ti_test 生成文本
-    ti_test_path = os.path.join(save_path,'test_tgt.npy')
+    ti_test_path = os.path.join(save_path,'tst.tgt.npy')
     np.save(ti_test_path,comment_examples[train_threshold,test_threshold])
     #tl_test 生成文本长度
-    tl_test_path = os.path.join(save_path,'test_tgt_len.npy')
+    tl_test_path = os.path.join(save_path,'tst.tgt.len.npy')
     np.save(tl_test_path,comment_lens[train_threshold,test_threshold])
     #memory 外部知识
-    test_mem_idx_path = os.path.join(save_path,'test_mem_idx.npy')
+    test_mem_idx_path = os.path.join(save_path,'tst.mem.idx.120.concept.npy')
     np.save(test_mem_idx_path,mem[train_threshold:test_threshold])
 
     # 评估数据
     # si_ 话题
-    si_val_path = os.path.join(save_path, 'val_src.npy')
+    si_val_path = os.path.join(save_path, 'val.src.npy')
     np.save(si_val_path, topic_examples[test_threshold:-1])
     # sl_val 话题长度
-    sl_val_path = os.path.join(save_path, 'val_src_len.npy')
+    sl_val_path = os.path.join(save_path, 'val.src.len.npy')
     np.save(sl_val_path, topic_lens[test_threshold:-1])
     # s_lbl_val 话题分类器
-    s_lbl_val = os.path.join(save_path, 'val_src_lbl_oh.npy')
-    np.save(s_lbl_train, topic_identifiers[test_threshold:-1])
+    s_lbl_val = os.path.join(save_path, 'val.src.lbl.oh.npy')
+    np.save(s_lbl_val, topic_identifiers[test_threshold:-1])
     # ti_val 生成文本
-    ti_val_path = os.path.join(save_path, 'val_tgt.npy')
+    ti_val_path = os.path.join(save_path, 'val.tgt.npy')
     np.save(ti_val_path, comment_examples[test_threshold, -1])
     # tl_val 生成文本长度
-    tl_val_path = os.path.join(save_path, 'val_tgt_len.npy')
+    tl_val_path = os.path.join(save_path, 'val.tgt.len.npy')
     np.save(tl_val_path, comment_lens[test_threshold, -1])
     # memory 外部知识
-    val_mem_idx_path = os.path.join(save_path, 'val_mem_idx.npy')
+    val_mem_idx_path = os.path.join(save_path, 'val.mem.idx.120.concept.npy')
     np.save(val_mem_idx_path, mem[test_threshold:-1])
     
 def load_topic_list(file_path):
@@ -181,12 +181,12 @@ if __name__ == '__main__':
     # vocab_dict['<pad>'] = len(vocab_dict)
     # wv['<pad>']= np.zeros(shape=200.)
 
-    root_path = '/home/shengyu/yeli/textGenerate/dataset'
-    origin_file = os.path.join(root_path,'movie_storyline_comment_topic_new.csv')
-    stopword_file ='/home/shengyu/yeli/textGenerate/util/stopword.txt'
+    root_path = '/Users/mac/workspace/textGenerate/dataset'
+    origin_file = '/Users/mac/Desktop/topic_small.csv'
+    stopword_file ='/Users/mac/workspace/textGenerate/util/stopword.txt'
     topic_list_path = os.path.join(root_path,'topic.txt')
     topic_list = load_topic_list(topic_list_path)
-    vocab_dict = np.load(os.path.join(root_path,'vocab_dict.npy')).item()
+    vocab_dict = np.load(os.path.join(root_path,'vocab_dict.npy'),allow_pickle=True).item()
 
     stopwords = stopwordslist(stopword_file)
     handle(origin_file,vocab_dict,topic_list,root_path,stopwords)
