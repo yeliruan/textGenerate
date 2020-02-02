@@ -24,9 +24,9 @@ def handle(origin_file,vocab_dict,topic_list,save_path,backgroud_knowledge_max_l
     '''backgroud_knowledge_max_length:背景知识最大长度'''
     '''save_path:生成文件保存路径'''
 
-    topic_examples = []
-    # topic_lens = []
-    # topic_identifiers = []
+    # topic_examples = []
+    topic_lens = []
+    topic_identifiers = []
     # comment_examples = []
     # comment_lens = []
     # mem = []
@@ -44,21 +44,21 @@ def handle(origin_file,vocab_dict,topic_list,save_path,backgroud_knowledge_max_l
             topic_str = row[4]
 
             topics = topic_str.split(' ')
-            topic_examples_temp = []
-
-            for topic in topics:
-                if topic != '':
-                    try:
-                        topic_examples_temp.append(vocab_dict[topic])
-                    except KeyError:
-                        topic_examples_temp.append(vocab_dict['<PAD>'])
-                else:
-                    print('存在空字符:'+topic_str)
-            topic_examples.append(topic_examples_temp)
+            # topic_examples_temp = []
+            # 
+            # for topic in topics:
+            #     if topic != '':
+            #         try:
+            #             topic_examples_temp.append(vocab_dict[topic])
+            #         except KeyError:
+            #             topic_examples_temp.append(vocab_dict['<PAD>'])
+            #     else:
+            #         print('存在空字符:'+topic_str)
+            # topic_examples.append(topic_examples_temp)
 
            
-            # topic_lens.append(len(topics))
-            # topic_identifiers.append([1 if topic in topics else 0 for topic in topic_list])
+            topic_lens.append(len(topics))
+            topic_identifiers.append([1 if topic in topics else 0 for topic in topic_list])
 
             # comment_words = comment_str.split(' ')
             # comment_examples_temp = []
@@ -97,20 +97,20 @@ def handle(origin_file,vocab_dict,topic_list,save_path,backgroud_knowledge_max_l
             # mem.append(mem_temp)
 
     #训练：测试：评估分段
-    total_examples_length = len(topic_examples)
+    total_examples_length = len(topic_lens)
     train_threshold = int(TRAIN_TEST_VAL[0]*total_examples_length)
     test_threshold = int(TRAIN_TEST_VAL[1]*total_examples_length+train_threshold)
 
     #训练数据
     #si_train 话题
-    si_train_path = os.path.join(save_path,'train_src.npy')
-    np.save(si_train_path,topic_examples[0:train_threshold])
-    #sl_train 话题长度
-    # sl_train_path = os.path.join(save_path,'train_src_len.npy')
-    # np.save(sl_train_path,topic_lens[0:train_threshold])
-    # #s_lbl_train 话题分类器
-    # s_lbl_train = os.path.join(save_path,'train_src_lbl_oh.npy')
-    # np.save(s_lbl_train,topic_identifiers[0:train_threshold])
+    # si_train_path = os.path.join(save_path,'train_src.npy')
+    # np.save(si_train_path,topic_examples[0:train_threshold])
+    # sl_train 话题长度
+    sl_train_path = os.path.join(save_path,'train_src_len.npy')
+    np.save(sl_train_path,topic_lens[0:train_threshold])
+    #s_lbl_train 话题分类器
+    s_lbl_train = os.path.join(save_path,'train_src_lbl_oh.npy')
+    np.save(s_lbl_train,topic_identifiers[0:train_threshold])
     # #ti_train 生成文本
     # ti_train = os.path.join(save_path,'train_tgt.npy')
     # np.save(ti_train,comment_examples[0:train_threshold])
@@ -123,14 +123,14 @@ def handle(origin_file,vocab_dict,topic_list,save_path,backgroud_knowledge_max_l
 
     #测试数据
     #si_test 话题
-    si_test_path = os.path.join(save_path,'tst.src.npy')
-    np.save(si_test_path,topic_examples[train_threshold:test_threshold])
+    # si_test_path = os.path.join(save_path,'tst.src.npy')
+    # np.save(si_test_path,topic_examples[train_threshold:test_threshold])
     #sl_test 话题长度
-    # sl_test_path = os.path.join(save_path,'tst.src.len.npy')
-    # np.save(sl_test_path,topic_lens[train_threshold:test_threshold])
-    # #s_lbl_test 话题分类器
-    # s_lbl_test = os.path.join(save_path,'tst.src.lbl.oh.npy')
-    # np.save(s_lbl_test,topic_identifiers[train_threshold:test_threshold])
+    sl_test_path = os.path.join(save_path,'tst.src.len.npy')
+    np.save(sl_test_path,topic_lens[train_threshold:test_threshold])
+    # s_lbl_test 话题分类器
+    s_lbl_test = os.path.join(save_path,'tst.src.lbl.oh.npy')
+    np.save(s_lbl_test,topic_identifiers[train_threshold:test_threshold])
     # #ti_test 生成文本
     # ti_test_path = os.path.join(save_path,'tst.tgt.npy')
     # np.save(ti_test_path,comment_examples[train_threshold:test_threshold])
@@ -143,14 +143,14 @@ def handle(origin_file,vocab_dict,topic_list,save_path,backgroud_knowledge_max_l
 
     # 评估数据
     # si_ 话题
-    si_val_path = os.path.join(save_path, 'val.src.npy')
-    np.save(si_val_path, topic_examples[test_threshold:-1])
+    # si_val_path = os.path.join(save_path, 'val.src.npy')
+    # np.save(si_val_path, topic_examples[test_threshold:-1])
     # sl_val 话题长度
-    # sl_val_path = os.path.join(save_path, 'val.src.len.npy')
-    # np.save(sl_val_path, topic_lens[test_threshold:-1])
-    # # s_lbl_val 话题分类器
-    # s_lbl_val = os.path.join(save_path, 'val.src.lbl.oh.npy')
-    # np.save(s_lbl_val, topic_identifiers[test_threshold:-1])
+    sl_val_path = os.path.join(save_path, 'val.src.len.npy')
+    np.save(sl_val_path, topic_lens[test_threshold:-1])
+    # s_lbl_val 话题分类器
+    s_lbl_val = os.path.join(save_path, 'val.src.lbl.oh.npy')
+    np.save(s_lbl_val, topic_identifiers[test_threshold:-1])
     # # ti_val 生成文本
     # ti_val_path = os.path.join(save_path, 'val.tgt.npy')
     # np.save(ti_val_path, comment_examples[test_threshold: -1])
