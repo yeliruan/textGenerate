@@ -30,8 +30,8 @@ def handle(origin_file,vocab_dict,topic_list,save_path,backgroud_knowledge_max_l
     # topic_identifiers = []
     # comment_examples_test = []
     # comment_examples_val = []
-    comment_lens = []
-    # mem = []
+    # comment_lens = []
+    mem = []
 
     total_examples_length = 1060295
     total_examples_length_train = int(total_examples_length*0.7)
@@ -89,26 +89,26 @@ def handle(origin_file,vocab_dict,topic_list,save_path,backgroud_knowledge_max_l
             # print('%s size is %d' % (type(comment_examples),sys.getsizeof(comment_examples)))
             # examples = np.array(comment_examples)
             # print('%s size is %d' % (type(examples),sys.getsizeof(comment_examples)))
-            comment_lens.append(len(comment_words))
-            # storyline_words = storyline_str.split(' ')
-            # #将简介填充或截取
-            # if(len(storyline_words)>backgroud_knowledge_max_length):
-            #     storyline_words = storyline_words[0:backgroud_knowledge_max_length]
-            # else:
-            #     storyline_words.extend([PAD_TAG for i in range(backgroud_knowledge_max_length-len(storyline_words))])
-            # assert len(storyline_words)==backgroud_knowledge_max_length
-            #
+            # comment_lens.append(len(comment_words))
+            storyline_words = storyline_str.split(' ')
+            #将简介填充或截取
+            if(len(storyline_words)>backgroud_knowledge_max_length):
+                storyline_words = storyline_words[0:backgroud_knowledge_max_length]
+            else:
+                storyline_words.extend([PAD_TAG for i in range(backgroud_knowledge_max_length-len(storyline_words))])
+            assert len(storyline_words)==backgroud_knowledge_max_length
+            
             # #简介word转id
-            # mem_temp = []
-            # for word in storyline_words:
-            #     if word != '':
-            #         try:
-            #             mem_temp.append(vocab_dict[word])
-            #         except KeyError:
-            #             mem_temp.append(vocab_dict['<PAD>'])
-            #     else:
-            #         print('存在空字符:'+storyline_str)
-            # mem.append(mem_temp)
+            mem_temp = []
+            for word in storyline_words:
+                if word != '':
+                    try:
+                        mem_temp.append(vocab_dict[word])
+                    except KeyError:
+                        mem_temp.append(vocab_dict['<PAD>'])
+                else:
+                    print('存在空字符:'+storyline_str)
+            mem.append(mem_temp)
 
     # print('样例总数：'+str(total_examples_length_test_val))
     # print('测试样例数：'+str(len(comment_examples_test)))
@@ -133,11 +133,11 @@ def handle(origin_file,vocab_dict,topic_list,save_path,backgroud_knowledge_max_l
     # np.save(ti_train,comment_examples[0:train_threshold])
     # np.save(ti_train,comment_examples)
     # #tl_train 生成文本长度
-    tl_train = os.path.join(save_path,'train_tgt_len.npy')
-    np.save(tl_train,comment_lens[0:train_threshold])
+    # tl_train = os.path.join(save_path,'train_tgt_len.npy')
+    # np.save(tl_train,comment_lens[0:train_threshold])
     # #memory 外部知识
-    # train_mem_idx = os.path.join(save_path,'train_mem_idx_120_concept.npy')
-    # np.save(train_mem_idx,mem[0:train_threshold])
+    train_mem_idx = os.path.join(save_path,'train_mem_idx_120_concept.npy')
+    np.save(train_mem_idx,mem[0:train_threshold])
 
     #测试数据
     #si_test 话题
@@ -153,11 +153,11 @@ def handle(origin_file,vocab_dict,topic_list,save_path,backgroud_knowledge_max_l
     # ti_test_path = os.path.join(save_path,'tst.tgt.npy')
     # np.save(ti_test_path,comment_examples_test)
     # #tl_test 生成文本长度
-    tl_test_path = os.path.join(save_path,'tst.tgt.len.npy')
-    np.save(tl_test_path,comment_lens[train_threshold:test_threshold])
+    # tl_test_path = os.path.join(save_path,'tst.tgt.len.npy')
+    # np.save(tl_test_path,comment_lens[train_threshold:test_threshold])
     # #memory 外部知识
-    # test_mem_idx_path = os.path.join(save_path,'tst.mem.idx.120.concept.npy')
-    # np.save(test_mem_idx_path,mem[train_threshold:test_threshold])
+    test_mem_idx_path = os.path.join(save_path,'tst.mem.idx.120.concept.npy')
+    np.save(test_mem_idx_path,mem[train_threshold:test_threshold])
 
     # 评估数据
     # si_ 话题
@@ -173,11 +173,11 @@ def handle(origin_file,vocab_dict,topic_list,save_path,backgroud_knowledge_max_l
     # ti_val_path = os.path.join(save_path, 'val.tgt.npy')
     # np.save(ti_val_path, comment_examples_val)
     # # tl_val 生成文本长度
-    tl_val_path = os.path.join(save_path, 'val.tgt.len.npy')
-    np.save(tl_val_path, comment_lens[test_threshold: -1])
+    # tl_val_path = os.path.join(save_path, 'val.tgt.len.npy')
+    # np.save(tl_val_path, comment_lens[test_threshold: -1])
     # # memory 外部知识
-    # val_mem_idx_path = os.path.join(save_path, 'val.mem.idx.120.concept.npy')
-    # np.save(val_mem_idx_path, mem[test_threshold:-1])
+    val_mem_idx_path = os.path.join(save_path, 'val.mem.idx.120.concept.npy')
+    np.save(val_mem_idx_path, mem[test_threshold:-1])
     
 def load_topic_list(file_path):
     topic_list = []
