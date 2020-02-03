@@ -32,14 +32,17 @@ def handle(origin_file,vocab_dict,topic_list,save_path,backgroud_knowledge_max_l
     # comment_lens = []
     # mem = []
 
-    total_examples_length = 0
+    total_examples_length = int(1060295*0.7)
+
     with open(origin_file, 'r',encoding='utf8') as f:
         reader = csv.reader(f)
         #去掉第一行header
         next(f)
 
         for row in reader:
-            total_examples_length+=1
+            if(total_examples_length==0):
+                break
+            total_examples_length -= 1
             movie_id = row[0]
             comment_str = row[1]
             rating_str = row[2]
@@ -63,19 +66,19 @@ def handle(origin_file,vocab_dict,topic_list,save_path,backgroud_knowledge_max_l
             # topic_lens.append(len(topics))
             # topic_identifiers.append([1 if topic in topics else 0 for topic in topic_list])
 
-            # comment_words = comment_str.split(' ')
-            # comment_examples_temp = []
-            #
-            # for word in comment_words:
-            #     if word != '':
-            #         try:
-            #             comment_examples_temp.append(vocab_dict[word])
-            #         except KeyError:
-            #             comment_examples_temp.append(vocab_dict['<PAD>'])
-            #     else:
-            #         print('存在空字符:'+comment_str)
+            comment_words = comment_str.split(' ')
+            comment_examples_temp = []
+
+            for word in comment_words:
+                if word != '':
+                    try:
+                        comment_examples_temp.append(vocab_dict[word])
+                    except KeyError:
+                        comment_examples_temp.append(vocab_dict['<PAD>'])
+                else:
+                    print('存在空字符:'+comment_str)
             # del comment_words,comment_str
-            # comment_examples.append(comment_examples_temp)
+            comment_examples.append(comment_examples_temp)
             # print('%s size is %d' % (type(comment_examples),sys.getsizeof(comment_examples)))
             # examples = np.array(comment_examples)
             # print('%s size is %d' % (type(examples),sys.getsizeof(comment_examples)))
@@ -102,9 +105,9 @@ def handle(origin_file,vocab_dict,topic_list,save_path,backgroud_knowledge_max_l
 
     print('样例总数：'+str(total_examples_length))
     #训练：测试：评估分段
-    
-    train_threshold = int(TRAIN_TEST_VAL[0]*total_examples_length)
-    test_threshold = int(TRAIN_TEST_VAL[1]*total_examples_length+train_threshold)
+
+    # train_threshold = int(TRAIN_TEST_VAL[0]*total_examples_length)
+    # test_threshold = int(TRAIN_TEST_VAL[1]*total_examples_length+train_threshold)
 
     #训练数据
     #si_train 话题
@@ -116,9 +119,10 @@ def handle(origin_file,vocab_dict,topic_list,save_path,backgroud_knowledge_max_l
     #s_lbl_train 话题分类器
     # s_lbl_train = os.path.join(save_path,'train_src_lbl_oh.npy')
     # np.save(s_lbl_train,topic_identifiers[0:train_threshold])
-    #ti_train 生成文本
-    # ti_train = os.path.join(save_path,'train_tgt.npy')
+    # ti_train 生成文本
+    ti_train = os.path.join(save_path,'train_tgt.npy')
     # np.save(ti_train,comment_examples[0:train_threshold])
+    np.save(ti_train,comment_examples)
     # #tl_train 生成文本长度
     # tl_train = os.path.join(save_path,'train_tgt_len.npy')
     # np.save(tl_train,comment_lens[0:train_threshold])
@@ -178,11 +182,11 @@ def stopwordslist(stopword_file):
 
 if __name__ == '__main__':
 
-    # root_path = '/home/shengyu/yeli/textGenerate/dataset'
-    root_path = r'A:\研三\textGenerate\dataset'
+    root_path = '/home/shengyu/yeli/textGenerate/dataset'
+    # root_path = r'A:\研三\textGenerate\dataset'
 
-    # origin_file = os.path.join(root_path,'movie_storyline_comment_topic_new.csv')
-    origin_file = os.path.join(root_path,'topic_small.csv')
+    origin_file = os.path.join(root_path,'movie_storyline_comment_topic_new.csv')
+    # origin_file = os.path.join(root_path,'topic_small.csv')
     topic_list_path = os.path.join(root_path,'topic.txt')
     topic_list = load_topic_list(topic_list_path)
     np_load_old = np.load
