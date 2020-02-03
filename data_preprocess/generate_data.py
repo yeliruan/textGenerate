@@ -108,7 +108,7 @@ def handle(origin_file,vocab_dict,topic_list,save_path,backgroud_knowledge_max_l
 
     train_threshold = int(TRAIN_TEST_VAL[0]*total_examples_length)
     test_threshold = int(TRAIN_TEST_VAL[1]*total_examples_length+train_threshold)
-    # print('%s size is %d' % (type(mem),sys.getsizeof(mem)))
+    print('%s size is %d' % (type(topic_identifiers),sys.getsizeof(topic_identifiers)))
     #训练数据
     # si_train 话题
     # si_train_path = os.path.join(save_path,'train_src.npy')
