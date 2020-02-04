@@ -49,9 +49,10 @@ def handle(origin_file,vocab_dict,topic_list,save_path,backgroud_knowledge_max_l
             rating_str = row[2]
             storyline_str = row[3]
             topic_str = row[4]
-            print(movie_id)
+            
             topics = topic_str.split(' ')
             count +=1
+            print(count)
             # topic_examples_temp = []
             # 
             # for topic in topics:
