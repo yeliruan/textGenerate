@@ -29,7 +29,7 @@ with open(filename, 'r') as f:
     next(f)
     for row in reader:
          count = count+1
-         if count <= 21:
+         if count <= 50000:
              rows = [{'MOVIE_ID':row[0], 'COMMENT':row[1], 'RATING':row[2],'SROTYLINE':row[3],'TOPIC':row[4]}]
              print(rows)
              write_csv(outfilename, headers, rows)
