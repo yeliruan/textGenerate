@@ -28,19 +28,21 @@ def handle(origin_file,vocab_dict,topic_list,save_path,backgroud_knowledge_max_l
     # topic_examples = []
     # topic_lens = []
     topic_identifiers = []
+    # topic_identifiers = []
     # comment_examples = []
     # comment_lens = []
     # mem = []
 
-    total_examples_length = 1060295
-    count = 0
+    total_examples_length = int(1060295*0.7)
     with open(origin_file, 'r',encoding='utf8') as f:
         reader = csv.reader(f)
         #去掉第一行header
         next(f)
 
         for row in reader:
-            count+=1
+            if(total_examples_length==0):
+                break
+            total_examples_length -= 1
             movie_id = row[0]
             comment_str = row[1]
             rating_str = row[2]
@@ -62,6 +64,7 @@ def handle(origin_file,vocab_dict,topic_list,save_path,backgroud_knowledge_max_l
 
            
             # topic_lens.append(len(topics))
+            
             topic_identifiers.append([1 if topic in topics else 0 for topic in topic_list])
 
             # comment_words = comment_str.split(' ')
@@ -80,13 +83,13 @@ def handle(origin_file,vocab_dict,topic_list,save_path,backgroud_knowledge_max_l
 
             # comment_lens.append(len(comment_words))
 
-            storyline_words = storyline_str.split(' ')
-            #将简介填充或截取
-            if(len(storyline_words)>backgroud_knowledge_max_length):
-                storyline_words = storyline_words[0:backgroud_knowledge_max_length]
-            else:
-                storyline_words.extend([PAD_TAG for i in range(backgroud_knowledge_max_length-len(storyline_words))])
-            assert len(storyline_words)==backgroud_knowledge_max_length
+            # storyline_words = storyline_str.split(' ')
+            # #将简介填充或截取
+            # if(len(storyline_words)>backgroud_knowledge_max_length):
+            #     storyline_words = storyline_words[0:backgroud_knowledge_max_length]
+            # else:
+            #     storyline_words.extend([PAD_TAG for i in range(backgroud_knowledge_max_length-len(storyline_words))])
+            # assert len(storyline_words)==backgroud_knowledge_max_length
 
 
             # #简介word转id
@@ -106,9 +109,9 @@ def handle(origin_file,vocab_dict,topic_list,save_path,backgroud_knowledge_max_l
     # print('样例总数：'+str(len(comment_examples_val)))
     #训练：测试：评估分段
 
-    train_threshold = int(TRAIN_TEST_VAL[0]*total_examples_length)
-    test_threshold = int(TRAIN_TEST_VAL[1]*total_examples_length+train_threshold)
-    print('%s size is %d' % (type(topic_identifiers),sys.getsizeof(topic_identifiers)))
+    # train_threshold = int(TRAIN_TEST_VAL[0]*total_examples_length)
+    # test_threshold = int(TRAIN_TEST_VAL[1]*total_examples_length+train_threshold)
+    # print('%s size is %d' % (type(topic_identifiers),sys.getsizeof(topic_identifiers)))
     #训练数据
     # si_train 话题
     # si_train_path = os.path.join(save_path,'train_src.npy')
@@ -118,7 +121,7 @@ def handle(origin_file,vocab_dict,topic_list,save_path,backgroud_knowledge_max_l
     # np.save(sl_train_path,topic_lens[0:train_threshold])
     # s_lbl_train 话题分类器
     s_lbl_train = os.path.join(save_path,'train_src_lbl_oh.npy')
-    np.save(s_lbl_train,topic_identifiers[0:train_threshold])
+    np.save(s_lbl_train,topic_identifiers)
     # ti_train 生成文本
     # ti_train = os.path.join(save_path,'train_tgt.npy')
     # np.save(ti_train,comment_examples[0:train_threshold])
@@ -137,8 +140,8 @@ def handle(origin_file,vocab_dict,topic_list,save_path,backgroud_knowledge_max_l
     # sl_test_path = os.path.join(save_path,'tst.src.len.npy')
     # np.save(sl_test_path,topic_lens[train_threshold:test_threshold])
     # s_lbl_test 话题分类器
-    s_lbl_test = os.path.join(save_path,'tst.src.lbl.oh.npy')
-    np.save(s_lbl_test,topic_identifiers[train_threshold:test_threshold])
+    # s_lbl_test = os.path.join(save_path,'tst.src.lbl.oh.npy')
+    # np.save(s_lbl_test,topic_identifiers[train_threshold:test_threshold])
     # ti_test 生成文本
     # ti_test_path = os.path.join(save_path,'tst.tgt.npy')
     # np.save(ti_test_path,comment_examples[train_threshold:test_threshold])
@@ -157,8 +160,8 @@ def handle(origin_file,vocab_dict,topic_list,save_path,backgroud_knowledge_max_l
     # sl_val_path = os.path.join(save_path, 'val.src.len.npy')
     # np.save(sl_val_path, topic_lens[test_threshold:-1])
     # s_lbl_val 话题分类器
-    s_lbl_val = os.path.join(save_path, 'val.src.lbl.oh.npy')
-    np.save(s_lbl_val, topic_identifiers[test_threshold:-1])
+    # s_lbl_val = os.path.join(save_path, 'val.src.lbl.oh.npy')
+    # np.save(s_lbl_val, topic_identifiers[test_threshold:-1])
     # ti_val 生成文本
     # ti_val_path = os.path.join(save_path, 'val.tgt.npy')
     # np.save(ti_val_path, comment_examples[train_threshold:test_threshold])
