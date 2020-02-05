@@ -34,12 +34,14 @@ def handle(origin_file,vocab_dict,topic_list,save_path,backgroud_knowledge_max_l
     mem = []
 
     total_examples_length = 1060295
+    count = 0
 
 
     with open(origin_file, 'r',encoding='utf8') as f:
         reader = csv.reader(f)
         #去掉第一行header
         next(f)
+        count += 1
 
         for row in reader:
             movie_id = row[0]
@@ -62,7 +64,6 @@ def handle(origin_file,vocab_dict,topic_list,save_path,backgroud_knowledge_max_l
                     print('存在空字符:'+topic_str)
             topic_examples.append(topic_examples_temp)
 
-           
             topic_lens.append(len(topics))
             
             topic_identifiers.append([1 if topic in topics else 0 for topic in topic_list])
@@ -103,7 +104,7 @@ def handle(origin_file,vocab_dict,topic_list,save_path,backgroud_knowledge_max_l
                     print('存在空字符:'+storyline_str)
             mem.append(mem_temp)
 
-    print('样例总数：'+str(total_examples_length))
+    print('样例总数：'+count)
 
     #训练：测试：评估分段
 
