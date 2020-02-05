@@ -33,6 +33,9 @@ def handle(origin_file,vocab_dict,topic_list,save_path,backgroud_knowledge_max_l
     comment_lens = []
     mem = []
 
+    total_examples_length = 1060295
+
+
     with open(origin_file, 'r',encoding='utf8') as f:
         reader = csv.reader(f)
         #去掉第一行header
@@ -76,7 +79,6 @@ def handle(origin_file,vocab_dict,topic_list,save_path,backgroud_knowledge_max_l
                 else:
                     print('存在空字符:'+comment_str)
             comment_examples.append(comment_examples_temp)
-            print('%s size is %d' % (type(examples),sys.getsizeof(comment_examples)))
 
             comment_lens.append(len(comment_words))
 
@@ -101,9 +103,8 @@ def handle(origin_file,vocab_dict,topic_list,save_path,backgroud_knowledge_max_l
                     print('存在空字符:'+storyline_str)
             mem.append(mem_temp)
 
-    print('样例总数：'+str(total_examples_length_test_val))
-    print('测试样例数：'+str(len(comment_examples_test)))
-    print('样例总数：'+str(len(comment_examples_val)))
+    print('样例总数：'+str(total_examples_length))
+
     #训练：测试：评估分段
 
     train_threshold = int(TRAIN_TEST_VAL[0]*total_examples_length)
