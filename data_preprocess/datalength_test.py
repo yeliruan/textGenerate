@@ -23,8 +23,8 @@ if __name__=='__main__':
     print(len(train_si))
     print(len(train_tgt))
 
-    print(test_src)
-    print(test_tgt)
+    print(len(test_src))
+    print(len(test_tgt))
 
-    print(val_src)
-    print(val_tgt)
+    print(len(val_src))
+    print(len(val_tgt))

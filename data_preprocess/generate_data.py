@@ -33,7 +33,7 @@ def handle(origin_file,vocab_dict,topic_list,save_path,backgroud_knowledge_max_l
     comment_lens = []
     mem = []
 
-    total_examples_length = 1060295
+    total_examples_length = 49986
     count = 0
 
 
@@ -41,9 +41,9 @@ def handle(origin_file,vocab_dict,topic_list,save_path,backgroud_knowledge_max_l
         reader = csv.reader(f)
         #去掉第一行header
         next(f)
-        count += 1
 
         for row in reader:
+            count += 1
             movie_id = row[0]
             comment_str = row[1]
             rating_str = row[2]
@@ -104,7 +104,7 @@ def handle(origin_file,vocab_dict,topic_list,save_path,backgroud_knowledge_max_l
                     print('存在空字符:'+storyline_str)
             mem.append(mem_temp)
 
-    print('样例总数：'+count)
+    print('样例总数：'+str(count))
 
     #训练：测试：评估分段
 
