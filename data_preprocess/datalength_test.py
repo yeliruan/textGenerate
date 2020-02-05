@@ -11,7 +11,7 @@ import pickle
 
 if __name__=='__main__':
 
-    root_path = '/home/shengyu/yeli/textGenerate/dataset'
+    root_path = '/home/shengyu/yeli/textGenerate/dataset/cteg'
     train_si = np.load(os.path.join(root_path, 'train_src.npy'))
     train_tgt = np.load(os.path.join(root_path, 'train_tgt.npy'))
 
