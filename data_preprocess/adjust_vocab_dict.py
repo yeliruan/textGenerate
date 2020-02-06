@@ -9,7 +9,7 @@ import numpy as np
 
 
 def get_vocab_dict(dict_path, dict_path_new):
-    vocab_dict = np.load(dict_path).item()
+    vocab_dict = np.load(dict_path,allow_pickle=True).item()
 
     vocab_dict['<GO>'] = len(vocab_dict)
     vocab_dict['<UNK>'] = len(vocab_dict)
@@ -21,9 +21,6 @@ def get_vocab_dict(dict_path, dict_path_new):
     print(vocab_dict['<EOS>'])
 
     np.save(dict_path_new,vocab_dict)
-
-
-
 
 
 if __name__=='__main__':

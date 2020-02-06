@@ -15,7 +15,7 @@ import numpy as np
 def train(dataset_path,save_path):
     print('word2vec begin to train')
     print('load dataset at '+ dataset_path)
-    model = Word2Vec(PathLineSentences(dataset_path),size=200,window=5,min_count=1,workers=4,sg=1)
+    model = Word2Vec(PathLineSentences(dataset_path),size=200,window=5,min_count=2,workers=4,sg=1)
     print('word2vec train end')
     print('word2vec model save to '+save_path)
     model.save(save_path)
@@ -33,6 +33,10 @@ def get_vocab_dict(model_save_path,vocab_dict_save_path):
     model = Word2Vec.load(model_save_path)
     wv = model.wv
     wv['<PAD>'] = np.zeros(wv.vector_size)
+    wv['<GO>'] = np.zeros(wv.vector_size)
+    wv['<UNK>'] = np.zeros(wv.vector_size)
+    wv['<EOS>'] = np.zeros(wv.vector_size)
+
     vocab_dict = dict()
     index = 0
     for key in model.wv.vocab.keys() :
