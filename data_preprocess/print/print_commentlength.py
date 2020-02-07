@@ -23,17 +23,17 @@ def handle_commentlength_print(origin_file, imgsave_path):
         # 绘制直方图
         # 选取max_length
 
-        comments_length = []
+        comments_length_list = []
         count = 0
         maxlength = 0
 
         for row in reader:
             count += 1
-            comments_length = row[3].length
+            comments_length = len(list(row[3]))
             if comments_length > maxlength:
                 maxlength = comments_length
 
-            comments_length.append(comments_length)
+            comments_length_list.append(comments_length)
         group = []
 
         for i in range(maxlength + 1):
@@ -41,7 +41,7 @@ def handle_commentlength_print(origin_file, imgsave_path):
         # sns.set_palette("hls") #设置所有图的颜色，使用hls色彩空间
         # sns.distplot(storyline_length,color="b",bins=30,kde=True)
 
-        plt.hist(comments_length, group, histtype='bar', rwidth=0.8)
+        plt.hist(comments_length_list, group, histtype='bar', rwidth=0.8)
         plt.legend()
 
         plt.xlabel('comments_length_group')
