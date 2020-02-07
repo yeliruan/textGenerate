@@ -35,13 +35,14 @@ def handle_commentlength_print(origin_file, imgsave_path):
 
             comments_length_list.append(comments_length)
         group = []
+        print(maxlength)
 
-        for i in range(maxlength + 1):
+        for i in range(1000):
             group.append(i)
         # sns.set_palette("hls") #设置所有图的颜色，使用hls色彩空间
         # sns.distplot(storyline_length,color="b",bins=30,kde=True)
 
-        plt.hist(comments_length_list, group, histtype='bar', rwidth=0.8)
+        plt.hist(comments_length_list, group, histtype='bar', rwidth=1)
         plt.legend()
 
         plt.xlabel('comments_length_group')
