@@ -36,11 +36,11 @@ def write_csv(outfilename, headers, rows):  # 写入内容
         f.close()
 
 if __name__=='__main__':
-    # filename = "/home/shengyu/yeli/movie_storyline_comment.csv"
-    # outfilename = "/home/shengyu/yeli/textGenerate/dataset/movie_storyline_comment_topic_similarity.csv"
+    filename = "/home/shengyu/yeli/movie_storyline_comment.csv"
+    outfilename = "/home/shengyu/yeli/textGenerate/dataset/movie_storyline_comment_topic_similarity.csv"
 
-    filename = '/Users/mac/Desktop/movie_storyline_comment.csv'
-    outfilename = '/Users/mac/Desktop/movie_storyline_comment_topic_similarity.csv'
+    # filename = '/Users/mac/Desktop/movie_storyline_comment.csv'
+    # outfilename = '/Users/mac/Desktop/movie_storyline_comment_topic_similarity.csv'
 
     headers = ['MOVIE_ID', 'COMMENT', 'RATING', 'STORYLINE', 'TOPIC']
     with open(outfilename, 'a', encoding='utf-8-sig')as f0:  # 写入header
