@@ -26,6 +26,7 @@ def handle_score_print(origin_file, imgsave_path):
     with open(origin_file, 'r', encoding="utf-8") as f:
         reader = csv.reader(f)
         print(type(reader))
+        next(f)
 
         # 统计评论长度
         # 绘制直方图
@@ -35,11 +36,12 @@ def handle_score_print(origin_file, imgsave_path):
         count = 0
 
         for row in reader:
-            count += 1
             if row[2]!='':
+                count += 1
                 score_list.append(int(row[2]))
 
         group = [0,1,2,3,4,5]
+        print(score_list)
         print('count',count)
 
         # sns.set_palette("hls") #设置所有图的颜色，使用hls色彩空间
