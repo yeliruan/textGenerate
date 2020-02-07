@@ -76,9 +76,10 @@ def handle_commentlength_print(origin_file, imgsave_path):
 
         for row in reader:
             count += 1
-            score_list.append(row[2])
+            if row[2]!='':
+                score_list.append(int(row[2]))
 
-        group = [1,2,3,4,5]
+        group = [0,1,2,3,4,5]
         print('count',count)
 
         # sns.set_palette("hls") #设置所有图的颜色，使用hls色彩空间
