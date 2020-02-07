@@ -51,6 +51,7 @@ if __name__=='__main__':
         reader = csv.reader(f)
         print(type(reader))
         next(f)
+        count = 0
         for row in reader:
             if len(row[1]) > 1:
                 if len(row[3]) > 1:
@@ -58,10 +59,12 @@ if __name__=='__main__':
                         if tfidf_similarity(row[1], row[3]) > 0.2:
                             rows = [{'MOVIE_ID': row[0], 'COMMENT': row[1], 'RATING': row[2], 'STORYLINE': row[3]}]
                             write_csv(outfilename, headers, rows)
+                            count += 1
                             print(rows)
                     except:
                         print('这条评论有问题', 'ID: ', row[0], 'COMMENT: ', row[1])
 
+    print(count)
 
 
 
