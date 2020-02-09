@@ -40,6 +40,8 @@ def get_keywords(text):
     keywords_obj = {}
     topic = []
 
+    # print(text_list)
+
     for keyword in keywords_list:  # 得到keywords 数组
         index = text_list.index(keyword)
         keywords_obj[keyword] = index
@@ -63,6 +65,8 @@ if __name__ == '__main__':
     file_path = os.path.join(root_path, 'movie_storyline_comment_topic_similarity.csv')
     save_path = os.path.join(root_path, 'movie_storyline_comment_topic_similarity_topic.csv')
 
+    save_path_problem = os.path.join(root_path, 'movie_storyline_comment_topic_similarity_topic.csv')
+
     headers = ['MOVIE_ID', 'COMMENT', 'RATING', 'STORYLINE', 'TOPIC']
 
     with open(file_path, 'r') as f, open(save_path, 'a', encoding='utf-8-sig') as w:
@@ -74,9 +78,12 @@ if __name__ == '__main__':
         next(f)
         count = 0
         for row in reader:
-            topic = get_keywords(row[1])
-            if topic != '':
-                count += 1
-                rows = [{'MOVIE_ID': row[0], 'COMMENT': row[1], 'RATING': row[2], 'STORYLINE': row[3], 'TOPIC': topic}]
-                write_csv(save_path, headers, rows)
-                print(rows)
+            try:
+                topic = get_keywords(row[1])
+                if topic != '':
+                    count += 1
+                    rows = [{'MOVIE_ID': row[0], 'COMMENT': row[1], 'RATING': row[2], 'STORYLINE': row[3], 'TOPIC': topic}]
+                    write_csv(save_path, headers, rows)
+            except ValueError:
+                rows = [{'MOVIE_ID': row[0], 'COMMENT': row[1], 'RATING': row[2], 'STORYLINE': row[3]}]
+                write_csv(save_path_problem, ['MOVIE_ID', 'COMMENT', 'RATING', 'STORYLINE'], rows)
