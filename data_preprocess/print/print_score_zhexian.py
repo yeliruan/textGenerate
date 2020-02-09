@@ -29,7 +29,6 @@ def handle_score_print(origin_file, imgsave_path):
         score_4_count = 0
         score_5_count = 0
 
-
         for row in reader:
             if row[6]!='':
                 if int(row[6]) == 1:
@@ -45,8 +44,7 @@ def handle_score_print(origin_file, imgsave_path):
 
         group = [1,2,3,4,5]
 
-        for i in 5:
-            score_list.append('score_'+i+1+'_count')
+        score_list = [score_1_count,score_2_count,score_3_count,score_4_count,score_5_count]
 
         print(score_list)
 
