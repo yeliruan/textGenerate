@@ -19,38 +19,44 @@ def get_keywords(text):
 
     comments_length = len(list(text))
 
-    if 20 > comments_length > 100:
-        return ''
+    if 20 < comments_length < 100:
 
-    top_k = int(comments_length // 10)
+        top_k = int(comments_length // 10)
+        keywords = "  ".join(jieba.analyse.extract_tags(text, topK=top_k, withWeight=False, allowPOS=()))
+        '''
+              sentence 需要提取的字符串，必须是str类型，不能是list
+              topK 提取前多少个关键字
+              withWeight 是否返回每个关键词的权重
+              allowPOS是允许的提取的词性，默认为allowPOS=‘ns’, ‘n’, ‘vn’, ‘v’，提取地名、名词、动名词、动词
+        '''
 
-    keywords = "  ".join(jieba.analyse.extract_tags(text, topK=top_k, withWeight=False, allowPOS=()))
-    '''
-          sentence 需要提取的字符串，必须是str类型，不能是list
-          topK 提取前多少个关键字
-          withWeight 是否返回每个关键词的权重
-          allowPOS是允许的提取的词性，默认为allowPOS=‘ns’, ‘n’, ‘vn’, ‘v’，提取地名、名词、动名词、动词
-    '''
+        # keywords = (jieba.analyse.extract_tags(sentence, topK=10, allowPOS=(['n', 'v','vn'])))
+        # print('动词，名次',keywords)
 
-    # keywords = (jieba.analyse.extract_tags(sentence, topK=10, allowPOS=(['n', 'v','vn'])))
-    # print('动词，名次',keywords)
+        text_list = text.split(' ')
+        keywords_list = keywords.split(' ')
+        keywords_obj = {}
+        topic = []
 
-    text_list = text.split(' ')
-    keywords_list = keywords.split(' ')
-    keywords_obj = {}
-    topic = []
+        # print(text_list)
 
-    # print(text_list)
+        for keyword in keywords_list:  # 得到keywords 数组
+            index = text_list.index(keyword)
+            keywords_obj[keyword] = index
 
-    for keyword in keywords_list:  # 得到keywords 数组
-        index = text_list.index(keyword)
-        keywords_obj[keyword] = index
+        # 这里对排序的规则进行了定义，x指元组，x[1]是值，x[0]是键
+        for item in sorted(keywords_obj.items(), key=lambda x: x[1]):
+            topic.append(item[0])
 
-    # 这里对排序的规则进行了定义，x指元组，x[1]是值，x[0]是键
-    for item in sorted(keywords_obj.items(), key=lambda x: x[1]):
-        topic.append(item[0])
+        topic_str = ''
 
-    return topic
+        for topic_item in topic:
+            if topic_item != '':
+                topic_str = topic_str + topic_item + ' '
+
+        return [comments_length, topic_str.strip()]
+    else:
+        return
 
 
 def write_csv(savefile, headers, rows):  # 写入内容
@@ -61,7 +67,8 @@ def write_csv(savefile, headers, rows):  # 写入内容
 
 
 if __name__ == '__main__':
-    root_path = '/home/shengyu/yeli/textGenerate/dataset'
+    # root_path = '/home/shengyu/yeli/textGenerate/dataset'
+    root_path = '/Users/mac/workspace/textGenerate/dataset/'
     file_path = os.path.join(root_path, 'movie_storyline_comment_topic_similarity.csv')
     save_path = os.path.join(root_path, 'movie_storyline_comment_topic_similarity_topic.csv')
 
@@ -69,10 +76,11 @@ if __name__ == '__main__':
 
     headers = ['MOVIE_ID', 'COMMENT', 'RATING', 'STORYLINE', 'TOPIC']
 
-    with open(file_path, 'r') as f, open(save_path, 'a', encoding='utf-8-sig') as w:
+    with open(save_path, 'a', encoding='utf-8-sig') as w:  # 写入header
         f_csv = csv.DictWriter(w, headers)
-        f_csv.writeheader()  # 写入头
+        f_csv.writeheader()
 
+    with open(file_path, 'r') as f:
         reader = csv.reader(f)
         print(type(reader))
         next(f)
@@ -80,10 +88,11 @@ if __name__ == '__main__':
         for row in reader:
             try:
                 topic = get_keywords(row[1])
-                if topic != '':
+                if topic:
                     count += 1
                     rows = [
-                        {'MOVIE_ID': row[0], 'COMMENT': row[1], 'RATING': row[2], 'STORYLINE': row[3], 'TOPIC': topic}]
+                        {'MOVIE_ID': row[0], 'COMMENT': row[1], 'RATING': row[2], 'STORYLINE': row[3],
+                         'TOPIC': topic[1]}]
                     write_csv(save_path, headers, rows)
             except ValueError:
                 rows = [{'MOVIE_ID': row[0], 'COMMENT': row[1], 'RATING': row[2], 'STORYLINE': row[3]}]
