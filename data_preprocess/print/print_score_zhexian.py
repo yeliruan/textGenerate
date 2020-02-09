@@ -23,16 +23,32 @@ def handle_score_print(origin_file, imgsave_path):
         # 选取max_length
 
         score_list = []
-        count = 0
+        score_1_count = 0
+        score_2_count = 0
+        score_3_count = 0
+        score_4_count = 0
+        score_5_count = 0
+
 
         for row in reader:
             if row[6]!='':
-                count += 1
-                score_list.append(int(row[6]))
+                if int(row[6]) == 1:
+                    score_1_count += 1
+                elif int(row[6]) == 2:
+                    score_2_count += 1
+                elif int(row[6]) == 3:
+                    score_3_count += 1
+                elif int(row[6]) == 4:
+                    score_4_count += 1
+                elif int(row[6]) == 5:
+                    score_5_count += 1
 
-        group = [0,1,2,3,4,5]
+        group = [1,2,3,4,5]
+
+        for i in 5:
+            score_list.append('score_'+i+1+'_count')
+
         print(score_list)
-        print('count',count)
 
         # sns.set_palette("hls") #设置所有图的颜色，使用hls色彩空间
         # sns.distplot(storyline_length,color="b",bins=30,kde=True)
