@@ -67,8 +67,8 @@ def write_csv(savefile, headers, rows):  # 写入内容
 
 
 if __name__ == '__main__':
-    # root_path = '/home/shengyu/yeli/textGenerate/dataset'
-    root_path = '/Users/mac/workspace/textGenerate/dataset/'
+    root_path = '/home/shengyu/yeli/textGenerate/dataset'
+    # root_path = '/Users/mac/workspace/textGenerate/dataset/'
     file_path = os.path.join(root_path, 'movie_storyline_comment_topic_similarity.csv')
     save_path = os.path.join(root_path, 'movie_storyline_comment_topic_similarity_topic.csv')
 
