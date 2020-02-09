@@ -45,8 +45,8 @@ def handle_score_print(origin_file, imgsave_path):
 
         group = [1,2,3,4,5]
 
-        for i in 5:
-            score_list.append('score_'+i+1+'_count')
+        for i in range(5):
+            score_list.append('score_'+str(i+1)+'_count')
 
         print(score_list)
 
