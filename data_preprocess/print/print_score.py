@@ -6,13 +6,6 @@ Created on Sun Feb 8 02:32:12 2020
 @author: mac
 """
 
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Sun Jan 26 17:59:12 2020
-
-@author: mac
-"""
 
 import csv
 
@@ -38,6 +31,7 @@ def handle_score_print(origin_file, imgsave_path):
         for row in reader:
             if row[2]!='':
                 count += 1
+                print(int(row[2]))
                 score_list.append(int(row[2]))
 
         group = [0,1,2,3,4,5]

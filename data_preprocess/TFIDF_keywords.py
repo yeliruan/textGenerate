@@ -6,8 +6,6 @@ Created on Sun Feb 6 17:59:12 2020
 @author: mac
 """
 
-
-
 import jieba.analyse
 import codecs
 
