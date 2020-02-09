@@ -26,10 +26,9 @@ def handle_score_print(origin_file, imgsave_path):
         count = 0
 
         for row in reader:
-            if row[2]!='':
+            if row[6]!='':
                 count += 1
-                print(int(row[2]))
-                score_list.append(int(row[2]))
+                score_list.append(int(row[6]))
 
         group = [0,1,2,3,4,5]
         print(score_list)
