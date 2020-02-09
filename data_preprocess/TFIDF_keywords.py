@@ -65,7 +65,7 @@ if __name__ == '__main__':
     file_path = os.path.join(root_path, 'movie_storyline_comment_topic_similarity.csv')
     save_path = os.path.join(root_path, 'movie_storyline_comment_topic_similarity_topic.csv')
 
-    save_path_problem = os.path.join(root_path, 'movie_storyline_comment_topic_similarity_topic.csv')
+    save_path_problem = os.path.join(root_path, 'movie_storyline_comment_topic_similarity_topic_problem.csv')
 
     headers = ['MOVIE_ID', 'COMMENT', 'RATING', 'STORYLINE', 'TOPIC']
 
@@ -82,8 +82,11 @@ if __name__ == '__main__':
                 topic = get_keywords(row[1])
                 if topic != '':
                     count += 1
-                    rows = [{'MOVIE_ID': row[0], 'COMMENT': row[1], 'RATING': row[2], 'STORYLINE': row[3], 'TOPIC': topic}]
+                    rows = [
+                        {'MOVIE_ID': row[0], 'COMMENT': row[1], 'RATING': row[2], 'STORYLINE': row[3], 'TOPIC': topic}]
                     write_csv(save_path, headers, rows)
             except ValueError:
                 rows = [{'MOVIE_ID': row[0], 'COMMENT': row[1], 'RATING': row[2], 'STORYLINE': row[3]}]
                 write_csv(save_path_problem, ['MOVIE_ID', 'COMMENT', 'RATING', 'STORYLINE'], rows)
+
+    print('end')
