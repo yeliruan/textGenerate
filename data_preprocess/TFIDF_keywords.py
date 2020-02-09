@@ -7,21 +7,30 @@ Created on Sun Feb 6 17:59:12 2020
 """
 
 import jieba.analyse
-import codecs
+import os
+import csv
 
 
 def get_keywords(text):
-    sentence = text
-    print(text)
+    """
+    :param text: 评论文本
+    :return: topic
+    """
 
-    '''
-    sentence 需要提取的字符串，必须是str类型，不能是list
-    topK 提取前多少个关键字
-    withWeight 是否返回每个关键词的权重
-    allowPOS是允许的提取的词性，默认为allowPOS=‘ns’, ‘n’, ‘vn’, ‘v’，提取地名、名词、动名词、动词
-    '''
+    comments_length = len(list(text))
 
-    keywords = "  ".join(jieba.analyse.extract_tags(sentence , topK=6, withWeight=False, allowPOS=()))
+    if 20 > comments_length > 100:
+        return ''
+
+    top_k = int(comments_length // 10)
+
+    keywords = "  ".join(jieba.analyse.extract_tags(text, topK=top_k, withWeight=False, allowPOS=()))
+    '''
+          sentence 需要提取的字符串，必须是str类型，不能是list
+          topK 提取前多少个关键字
+          withWeight 是否返回每个关键词的权重
+          allowPOS是允许的提取的词性，默认为allowPOS=‘ns’, ‘n’, ‘vn’, ‘v’，提取地名、名词、动名词、动词
+    '''
 
     # keywords = (jieba.analyse.extract_tags(sentence, topK=10, allowPOS=(['n', 'v','vn'])))
     # print('动词，名次',keywords)
@@ -31,22 +40,43 @@ def get_keywords(text):
     keywords_obj = {}
     topic = []
 
-    for keyword in keywords_list:#得到keywords 数组
+    for keyword in keywords_list:  # 得到keywords 数组
         index = text_list.index(keyword)
         keywords_obj[keyword] = index
 
-    #这里对排序的规则进行了定义，x指元组，x[1]是值，x[0]是键
-    for item in sorted(keywords_obj.items(),key=lambda x:x[1]):
+    # 这里对排序的规则进行了定义，x指元组，x[1]是值，x[0]是键
+    for item in sorted(keywords_obj.items(), key=lambda x: x[1]):
         topic.append(item[0])
 
-    print(topic)
+    return topic
 
-    # print(sorted(keywords_obj.items(),key=lambda x:x[1]))
+
+def write_csv(savefile, headers, rows):  # 写入内容
+    with open(savefile, 'a', encoding='utf-8-sig')as f:
+        f_csv = csv.DictWriter(f, headers)
+        # 如果需要写入标题就可以
+        f_csv.writerows(rows)
+
 
 if __name__ == '__main__':
-    file = r"/Users/mac/Desktop/test1.txt"
-    text = codecs.open(file, 'r', 'utf-8').read()
-    get_keywords(text)
+    root_path = '/home/shengyu/yeli/textGenerate/dataset'
+    file_path = os.path.join(root_path, 'movie_storyline_comment_topic_similarity.csv')
+    save_path = os.path.join(root_path, 'movie_storyline_comment_topic_similarity_topic.csv')
 
+    headers = ['MOVIE_ID', 'COMMENT', 'RATING', 'STORYLINE', 'TOPIC']
 
+    with open(file_path, 'r') as f, open(save_path, 'a', encoding='utf-8-sig') as w:
+        f_csv = csv.DictWriter(w, headers)
+        f_csv.writeheader()  # 写入头
 
+        reader = csv.reader(f)
+        print(type(reader))
+        next(f)
+        count = 0
+        for row in reader:
+            topic = get_keywords(row[1])
+            if topic != '':
+                count += 1
+                rows = [{'MOVIE_ID': row[0], 'COMMENT': row[1], 'RATING': row[2], 'STORYLINE': row[3], 'TOPIC': topic}]
+                write_csv(save_path, headers, rows)
+                print(rows)
