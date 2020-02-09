@@ -22,6 +22,7 @@ def count(filename):
 
 if __name__ == '__main__':
     root_path = '/home/shengyu/yeli/textGenerate/dataset'
+    movie_storyline_comment_path = '/home/shengyu/yeli/movie_storyline_comment.csv'
     origin_path = os.path.join(root_path, 'moviedata')
 
     movie_data = os.path.join(origin_path, 'movies.csv')
@@ -29,13 +30,15 @@ if __name__ == '__main__':
     person_data = os.path.join(origin_path, 'person.csv')
     users_data = os.path.join(origin_path, 'users.csv')
 
-    movie_number = count(movie_data)
-    comment_number = count(comment_data)
-    person_number = count(person_data)
-    users_number = count(users_data)
+    # movie_number = count(movie_data)
+    # comment_number = count(comment_data)
+    # person_number = count(person_data)
+    # users_number = count(users_data)
+    movie_storyline_comment_number = count(movie_storyline_comment_path)
 
-    print('movie_number',movie_number)
-    print('comment_number',comment_number)
-    print('person_number',person_number)
-    print('users_number',users_number)
+    # print('movie_number',movie_number)
+    # print('comment_number',comment_number)
+    # print('person_number',person_number)
+    # print('users_number',users_number)
+    print('movie_storyline_comment_number',movie_storyline_comment_number)
 
