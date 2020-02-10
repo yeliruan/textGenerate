@@ -44,7 +44,7 @@ def get_vocab_dict(model_save_path,vocab_dict_save_path):
         index+=1
 
     np.save(vocab_dict_save_path,vocab_dict )
-    
+    print('词典长度',len(vocab_dict))
 
 if __name__=='__main__':
     #this path is in my mac
@@ -64,7 +64,7 @@ if __name__=='__main__':
     vocab_dict_save_path = os.path.join(os.path.join(root_dir,'dataset'),'vocab_dict.npy')
 
     #train(dataset_path,save_path)
-    test(save_path)
+    # test(save_path)
     get_vocab_dict(save_path,vocab_dict_save_path)
     print('end')
     
