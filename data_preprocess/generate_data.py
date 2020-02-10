@@ -186,7 +186,7 @@ if __name__ == '__main__':
     root_path = '/home/shengyu/yeli/textGenerate/dataset'
     # root_path = r'A:\研三\textGenerate\dataset'
 
-    origin_file = os.path.join(root_path,'movie_storyline_comment_topic_new_small_new.csv')
+    origin_file = os.path.join(root_path,' movie_storyline_comment_topic_similarity_topic_new.csv')
     # origin_file = os.path.join(root_path,'topic_small.csv')
     topic_list_path = os.path.join(root_path,'topic_new.txt')
     topic_list = load_topic_list(topic_list_path)
