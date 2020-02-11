@@ -19,7 +19,7 @@ def get_keywords(text):
 
     comments_length = len(list(text))
 
-    if 20 < comments_length < 100:
+    if 10 < comments_length < 100:
 
         top_k = int(comments_length // 10)
         keywords = "  ".join(jieba.analyse.extract_tags(text, topK=top_k, withWeight=False, allowPOS=()))
