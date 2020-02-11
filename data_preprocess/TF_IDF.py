@@ -13,9 +13,11 @@ import csv
 
 
 def tfidf_similarity(s1, s2):
-    def add_space(s):
-        return ' '.join(list(s))
-
+    """
+    :param s1: 句子1
+    :param s2: 句子2
+    :return: 两个句子的相似值
+    """
     # 将字中间加入空格
     s1, s2 = add_space(s1), add_space(s2)
     # 转化为TF矩阵
@@ -28,6 +30,10 @@ def tfidf_similarity(s1, s2):
     return np.dot(vectors[0], vectors[1]) / (norm(vectors[0]) * norm(vectors[1]))
 
 
+def add_space(s):
+    return ' '.join(list(s))
+
+
 def write_csv(outfilename, headers, rows):  # 写入内容
     with open(outfilename, 'a', encoding='utf-8-sig')as f:
         f_csv = csv.DictWriter(f, headers)
@@ -37,7 +43,7 @@ def write_csv(outfilename, headers, rows):  # 写入内容
 
 if __name__=='__main__':
     filename = "/home/shengyu/yeli/movie_storyline_comment.csv"
-    outfilename = "/home/shengyu/yeli/textGenerate/dataset/movie_storyline_comment_topic_similarity.csv"
+    outfilename = "/home/shengyu/yeli/textGenerate/dataset/movie_storyline_comment_similarity_new.csv"
 
     # filename = '/Users/mac/Desktop/movie_storyline_comment.csv'
     # outfilename = '/Users/mac/Desktop/movie_storyline_comment_topic_similarity.csv'
@@ -56,7 +62,7 @@ if __name__=='__main__':
             if len(row[1]) > 1:
                 if len(row[3]) > 1:
                     try:
-                        if tfidf_similarity(row[1], row[3]) > 0.2:
+                        if tfidf_similarity(row[1], row[3]) > 0.3:
                             rows = [{'MOVIE_ID': row[0], 'COMMENT': row[1], 'RATING': row[2], 'STORYLINE': row[3]}]
                             write_csv(outfilename, headers, rows)
                             count += 1
