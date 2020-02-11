@@ -70,9 +70,9 @@ if __name__ == '__main__':
     root_path = '/home/shengyu/yeli/textGenerate/dataset'
     # root_path = '/Users/mac/workspace/textGenerate/dataset/'
     file_path = os.path.join(root_path, 'movie_storyline_comment_topic_similarity.csv')
-    save_path = os.path.join(root_path, 'movie_storyline_comment_topic_similarity_topic.csv')
+    save_path = os.path.join(root_path, 'movie_storyline_comment_similarity_topic.csv')
 
-    save_path_problem = os.path.join(root_path, 'movie_storyline_comment_topic_similarity_topic_problem.csv')
+    save_path_problem = os.path.join(root_path, 'movie_storyline_comment_similarity_topic_problem.csv')
 
     headers = ['MOVIE_ID', 'COMMENT', 'RATING', 'STORYLINE', 'TOPIC']
 
