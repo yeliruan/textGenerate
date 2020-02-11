@@ -56,7 +56,7 @@ def handle(origin_path,new_file_path,topics_list_save_path,low_thredshod):
 
     header = ['MOVIE_ID', 'COMMENT','RATING','SROTYLINE','TOPIC']
 
-    with open(origin_path, 'r',encoding='utf8') as f,open(new_file_path,'w',encoding='utf8') as w:
+    with open(origin_path, 'r',encoding='utf8') as f,open(new_file_path,'a',encoding='utf8') as w:
         reader = csv.reader(f)
         print(type(reader))
         next(f)
@@ -102,7 +102,7 @@ if __name__=='__main__':
     root_path = '/home/shengyu/yeli/textGenerate/dataset'
     #root_path = r'A:\研三\textGenerate\dataset'
     inputfile = os.path.join(root_path,'movie_storyline_comment_topic_similarity_topic.csv')
-    inputfile_new = os.path.join(root_path,' movie_storyline_comment_topic_similarity_topic_new.csv ')
+    inputfile_new = os.path.join(root_path,'movie_storyline_comment_topic_similarity_topic_new.csv')
     save_path = os.path.join(root_path,'topic_new.txt')
     handle(inputfile,inputfile_new,save_path,2)
     print('end')
