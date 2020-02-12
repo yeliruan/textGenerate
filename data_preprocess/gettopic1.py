@@ -20,6 +20,7 @@ def handle(origin_path,new_file_path,topics_list_save_path,low_thredshod):
     #保存低频topic词和高频词
     low_topics = set()
     high_topics = set()
+    count = 0
 
     with open(origin_path, 'r',encoding='utf8') as f:
         reader = csv.reader(f)
@@ -48,12 +49,13 @@ def handle(origin_path,new_file_path,topics_list_save_path,low_thredshod):
             for topic in topic_dict:
                 if(topic_dict[topic]>=low_thredshod):
                     high_topics.add(topic)
+                    count += 1
                 else:
                     low_topics.add(topic)
 
     #剔除低频词,并把新的样例写入new_file
 
-
+    print('高频词count',count)
     header = ['MOVIE_ID', 'COMMENT','RATING','SROTYLINE','TOPIC']
 
     with open(origin_path, 'r',encoding='utf8') as f,open(new_file_path,'a',encoding='utf8') as w:
