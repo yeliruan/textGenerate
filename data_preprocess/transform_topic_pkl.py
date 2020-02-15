@@ -17,8 +17,11 @@ if __name__=='__main__':
     # origin_path = '/Users/mac/Desktop/topic_new.txt'
     # save_path = '/Users/mac/Desktop/topic_list_100.pkl'
 
+    # origin_path = r'A:\研三\textGenerate\dataset\topic_new.txt'
+    # save_path = r'A:\研三\textGenerate\dataset\topic_list_100.pkl'
+
     topic = []
-    with open(origin_path, "r") as f,open(save_path, "wb") as w:  # 打开文件
+    with open(origin_path, "r",encoding='utf8') as f,open(save_path, "wb") as w:  # 打开文件
         data = f.read()  # 读取文件
         data = data.split(" ")
 
