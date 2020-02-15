@@ -35,7 +35,7 @@ def add_space(s):
 
 
 def write_csv(outfilename, headers, rows):  # 写入内容
-    with open(outfilename, 'a', encoding='utf-8-sig')as f:
+    with open(outfilename, 'a', encoding='utf8')as f:
         f_csv = csv.DictWriter(f, headers)
         # 如果需要写入标题就可以
         f_csv.writerows(rows)
@@ -43,30 +43,38 @@ def write_csv(outfilename, headers, rows):  # 写入内容
 
 if __name__=='__main__':
     filename = "/home/shengyu/yeli/movie_storyline_comment.csv"
-    outfilename = "/home/shengyu/yeli/textGenerate/dataset/movie_storyline_comment_similarity_new.csv"
+    outfilename = "/home/shengyu/yeli/textGenerate/dataset/movie_storyline_comment_similarity.csv"
 
     # filename = '/Users/mac/Desktop/movie_storyline_comment.csv'
     # outfilename = '/Users/mac/Desktop/movie_storyline_comment_topic_similarity.csv'
 
-    headers = ['MOVIE_ID', 'COMMENT', 'RATING', 'STORYLINE', 'TOPIC']
-    with open(outfilename, 'a', encoding='utf-8-sig')as f0:  # 写入header
-        f_csv = csv.DictWriter(f0, headers)
-        f_csv.writeheader()
+    # filename = r'A:\研三\textGenerate\dataset\movie_storyline_comment.csv'
+    # outfilename = r'A:\研三\textGenerate\dataset\movie_storyline_comment_similarity.csv'
 
-    with open(filename, 'r') as f:
+    #02.15 增加similarity列，评论和简介的相似度，用于筛选样例
+    # 阅读数据发现，评论和简介存在直接粘贴复制的情况，因此给相似度设置一个最高阈值0.66
+    headers = ['MOVIE_ID', 'COMMENT', 'RATING', 'STORYLINE','SIMILARITY']
+
+    with open(filename, 'r',encoding='utf8') as f,open(outfilename, 'w',newline='', encoding='utf-8-sig')as w:
         reader = csv.reader(f)
+        # 写入header
+        writer = csv.DictWriter(w, headers)
+        writer.writeheader()
         print(type(reader))
         next(f)
         count = 0
+        
         for row in reader:
             if len(row[1]) > 1:
                 if len(row[3]) > 1:
                     try:
-                        if tfidf_similarity(row[1], row[3]) > 0.3:
-                            rows = [{'MOVIE_ID': row[0], 'COMMENT': row[1], 'RATING': row[2], 'STORYLINE': row[3]}]
-                            write_csv(outfilename, headers, rows)
+                        similarity = tfidf_similarity(row[1],row[3])
+                        if similarity > 0.3 and similarity <0.66:
+                            rows = [{'MOVIE_ID': row[0], 'COMMENT': row[1], 'RATING': row[2], 'STORYLINE': row[3],'SIMILARITY':similarity}]
+                            # 如果需要写入标题就可以
+                            writer.writerows(rows)
                             count += 1
-                            print(rows)
+                            # print(rows)
                     except:
                         print('这条评论有问题', 'ID: ', row[0], 'COMMENT: ', row[1])
 
