@@ -6,12 +6,12 @@ __author__ = '13314409603@163.com'
 
 import csv
 import numpy as np
-from util.constant import PAD_TAG
+from util.constant import PAD_TAG,UNKNOW_TAG,BEGIN_TAG,END_TAG
 from util.constant import TRAIN_TEST_VAL
 import os
 import sys
 
-def handle(origin_file,vocab_dict,topic_list,save_path,backgroud_knowledge_max_length=168):
+def handle(origin_file,vocab_dict,topic_list,save_path,backgroud_knowledge_max_length=187):
 
     '''origin file 格式：movie_id  comment rating  storyline   topic'''
     '''movie_id:电影id'''
@@ -28,12 +28,11 @@ def handle(origin_file,vocab_dict,topic_list,save_path,backgroud_knowledge_max_l
     topic_examples = []
     topic_lens = []
     topic_identifiers = []
-    # topic_identifiers = []
     comment_examples = []
     comment_lens = []
     mem = []
 
-    total_examples_length = 49986
+    total_examples_length = 0
     count = 0
 
 
@@ -59,7 +58,7 @@ def handle(origin_file,vocab_dict,topic_list,save_path,backgroud_knowledge_max_l
                     try:
                         topic_examples_temp.append(vocab_dict[topic])
                     except KeyError:
-                        topic_examples_temp.append(vocab_dict['<PAD>'])
+                        topic_examples_temp.append(vocab_dict[UNKNOW_TAG])
                 else:
                     print('存在空字符:'+topic_str)
             topic_examples.append(topic_examples_temp)
@@ -70,13 +69,12 @@ def handle(origin_file,vocab_dict,topic_list,save_path,backgroud_knowledge_max_l
 
             comment_words = comment_str.split(' ')
             comment_examples_temp = []
-            
             for word in comment_words:
                 if word != '':
                     try:
                         comment_examples_temp.append(vocab_dict[word])
                     except KeyError:
-                        comment_examples_temp.append(vocab_dict['<PAD>'])
+                        comment_examples_temp.append(vocab_dict[UNKNOW_TAG])
                 else:
                     print('存在空字符:'+comment_str)
             comment_examples.append(comment_examples_temp)
@@ -99,13 +97,13 @@ def handle(origin_file,vocab_dict,topic_list,save_path,backgroud_knowledge_max_l
                     try:
                         mem_temp.append(vocab_dict[word])
                     except KeyError:
-                        mem_temp.append(vocab_dict['<PAD>'])
+                        mem_temp.append(vocab_dict[UNKNOW_TAG])
                 else:
                     print('存在空字符:'+storyline_str)
             mem.append(mem_temp)
 
     print('样例总数：'+str(count))
-
+    total_examples_length = count
     #训练：测试：评估分段
 
     train_threshold = int(TRAIN_TEST_VAL[0]*total_examples_length)
@@ -172,7 +170,6 @@ def handle(origin_file,vocab_dict,topic_list,save_path,backgroud_knowledge_max_l
     np.save(val_mem_idx_path, mem[test_threshold:-1])
     
 def load_topic_list(file_path):
-    topic_list = []
     with open(file_path, 'r',encoding='utf8') as f:  # 打开文件
         topic_list = f.read().split(' ')  # 读取文件
     return topic_list 

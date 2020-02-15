@@ -5,6 +5,9 @@ __author__ = '13314409603@163.com'
 
 #补齐tag
 PAD_TAG = '<PAD>'
+UNKNOW_TAG = '<UNK>'
+BEGIN_TAG = '<GO>'
+END_TAG = '<EOS>'
 
 TRAIN_TEST_VAL = [0.7,0.2,0.1]
 

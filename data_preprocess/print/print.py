@@ -11,8 +11,8 @@ import csv
 
 import matplotlib.pyplot as plt
 from matplotlib.font_manager import FontProperties
-
-import seaborn as sns 
+#
+import seaborn as sns
 import os
 
 def handle_print(origin_file,imgsave_path):
@@ -20,7 +20,7 @@ def handle_print(origin_file,imgsave_path):
     with open(origin_file, 'r',encoding="utf-8") as f:
         reader = csv.reader(f)
         print(type(reader))
-       
+
         # 统计简介长度
         # 绘制直方图
         # 选取max_length
@@ -43,7 +43,7 @@ def handle_print(origin_file,imgsave_path):
 
     # sns.set_palette("hls") #设置所有图的颜色，使用hls色彩空间
     # sns.distplot(storyline_length,color="b",bins=30,kde=True)
- 
+
 
     plt.hist(storyline_length, group, histtype='bar', rwidth=0.8)
     plt.legend()
@@ -85,11 +85,12 @@ def cal_sentence_length(origin_file,rate):
 
 if __name__ == '__main__':
     #root_path = '/Users/mac/Desktop/'
+    # root_path = r'A:\研三\textGenerate\dataset'
     root_path = '/home/shengyu/yeli/textGenerate/dataset'
     
     
-    origin_file = os.path.join(root_path,'movie_storyline_comment_topic_new.csv')
+    origin_file = os.path.join(root_path,'movie_storyline_comment_similarity_topic_new.csv')
     imgsave_path = os.path.join(root_path,'storyline_length.jpg')
     
-    handle_print(origin_file,imgsave_path)
+    # handle_print(origin_file,imgsave_path)
     cal_sentence_length(origin_file,0.95)

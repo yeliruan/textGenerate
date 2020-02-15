@@ -10,7 +10,7 @@ from gensim.models import Word2Vec
 from gensim.models.word2vec import PathLineSentences
 import os
 import numpy as np
-
+from util import constant
 
 def train(dataset_path,save_path):
     print('word2vec begin to train')
@@ -27,24 +27,6 @@ def test(model_save_path):
     wv = model.wv
     print(wv['爱情'])
     print(wv.most_similar('爱情'))
-
-def get_vocab_dict(model_save_path,vocab_dict_save_path):
-    print('word2vec load from '+model_save_path)
-    model = Word2Vec.load(model_save_path)
-    wv = model.wv
-    wv['<PAD>'] = np.zeros(wv.vector_size)
-    wv['<GO>'] = np.zeros(wv.vector_size)
-    wv['<UNK>'] = np.zeros(wv.vector_size)
-    wv['<EOS>'] = np.zeros(wv.vector_size)
-
-    vocab_dict = dict()
-    index = 0
-    for key in model.wv.vocab.keys() :
-        vocab_dict[key] = index
-        index+=1
-
-    np.save(vocab_dict_save_path,vocab_dict )
-    print('词典长度',len(vocab_dict))
 
 if __name__=='__main__':
     #this path is in my mac
@@ -63,8 +45,7 @@ if __name__=='__main__':
     save_path = os.path.join(word2vec_dir,'word2vec_model')
     vocab_dict_save_path = os.path.join(os.path.join(root_dir,'dataset'),'vocab_dict.npy')
 
-    #train(dataset_path,save_path)
-    # test(save_path)
-    get_vocab_dict(save_path,vocab_dict_save_path)
+    train(dataset_path,save_path)
+    test(save_path)
     print('end')
     
