@@ -22,7 +22,7 @@ def handle(origin_path,new_file_path,topics_list_save_path,low_thredshod):
     high_topics = set()
     count = 0
 
-    with open(origin_path, 'r',encoding='utf8') as f:
+    with open(origin_path, 'r',encoding='utf-8-sig') as f:
         reader = csv.reader(f)
         print(type(reader))
         next(f)
@@ -45,20 +45,21 @@ def handle(origin_path,new_file_path,topics_list_save_path,low_thredshod):
                 else:
                     topic_dict[topic] = 1
 
-                #区分高低频词
-            for topic in topic_dict:
-                if(topic_dict[topic]>=low_thredshod):
-                    high_topics.add(topic)
-                    count += 1
-                else:
-                    low_topics.add(topic)
+        #区分高低频词
+        for topic in topic_dict:
+            if(topic_dict[topic]>=low_thredshod):
+                high_topics.add(topic)
+                count += 1
+            else:
+                low_topics.add(topic)
 
     #剔除低频词,并把新的样例写入new_file
 
     print('高频词count',count)
     header = ['MOVIE_ID', 'COMMENT','RATING','SROTYLINE','TOPIC']
 
-    with open(origin_path, 'r',encoding='utf8') as f,open(new_file_path,'a',encoding='utf8') as w:
+    count = 0
+    with open(origin_path, 'r',encoding='utf-8-sig') as f,open(new_file_path,'w',newline='',encoding='utf-8-sig') as w:
         reader = csv.reader(f)
         print(type(reader))
         next(f)
@@ -94,19 +95,20 @@ def handle(origin_path,new_file_path,topics_list_save_path,low_thredshod):
                 row[4] = ' '.join(new_topics)
                 rows = [{'MOVIE_ID': row[0], 'COMMENT': row[1], 'RATING': row[2], 'SROTYLINE': row[3], 'TOPIC': row[4]}]
                 f_csv.writerows(rows)
-
+                count +=1
+    print('样例数%d' % count)
 
     #写入topic list
-    with open(topics_list_save_path,'w',encoding='utf8') as w:
+    with open(topics_list_save_path,'w',encoding='utf-8-sig') as w:
         w.write(' '.join(high_topics))
 
 if __name__=='__main__':
     root_path = '/home/shengyu/yeli/textGenerate/dataset'
-    #root_path = r'A:\研三\textGenerate\dataset'
+    # root_path = r'A:\研三\textGenerate\dataset'
     inputfile = os.path.join(root_path,'movie_storyline_comment_similarity_topic.csv')
     inputfile_new = os.path.join(root_path,'movie_storyline_comment_similarity_topic_new.csv')
     save_path = os.path.join(root_path,'topic_new.txt')
-    handle(inputfile,inputfile_new,save_path,2)
+    handle(inputfile,inputfile_new,save_path,4)
     print('end')
 
 
