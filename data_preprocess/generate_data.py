@@ -64,8 +64,10 @@ def handle(origin_file,vocab_dict,topic_list,save_path,backgroud_knowledge_max_l
             topic_examples.append(topic_examples_temp)
 
             topic_lens.append(len(topics))
-            
-            topic_identifiers.append([1 if topic in topics else 0 for topic in topic_list])
+
+            topic_identifier = [1 if topic in topics else 0 for topic in topic_list]
+            topic_identifier.append(0)
+            topic_identifiers.append(topic_identifier)
 
             comment_words = comment_str.split(' ')
             comment_examples_temp = []
@@ -180,8 +182,8 @@ def stopwordslist(stopword_file):
 
 if __name__ == '__main__':
 
-    root_path = '/home/shengyu/yeli/textGenerate/dataset'
-    # root_path = r'A:\研三\textGenerate\dataset'
+    # root_path = '/home/shengyu/yeli/textGenerate/dataset'
+    root_path = r'A:\研三\textGenerate\dataset'
 
     origin_file = os.path.join(root_path,'movie_storyline_comment_similarity_topic_new.csv')
     # origin_file = os.path.join(root_path,'topic_small.csv')
